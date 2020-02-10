@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css">
+
+    <!-- Leaflet Easy Button -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+
+    <!-- Leaflet Clusters -->
+    <link rel="stylesheet" type="text/css"
+    href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+    integrity="sha512-BBToHPBStgMiw0lD4AtkRIZmdndhB6aQbXpX7omcrXeG2PauGBl2lzq2xUZTxaLxYz5IDHlmneCZ1IJ+P3kYtQ=="
+    crossorigin="">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+    integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ=="
+    crossorigin="">
+
+    <!-- Bootstrap DatePicker (TempusDominus)-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+
+    <!-- Bootstrap Select -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+    <!-- css -->
+    <link rel="stylesheet" href="main.css">
+
+    <!-- Font Awesome -->
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <nav class="shadow navbar navbar-light bg-secondary">
+          <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span class="my-auto ml-3">Detroit Crime Viewer</span></a>
+    </nav>
+
+    <div class="container-fluid intro bg-primary">
+        <div class="row">
+            <div class="col-3 mb-3 mt-3 content d-flex flex-column">
+                <div class="col bg-light border rounded">
+                    
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h4 class="text-primary"><i class="fas fa-filter text-warning"></i>  Data Filters</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-left my-2">
+                            <h5 class="text-primary"><i class="far fa-clock text-warning"></i>  Date Filters</h5>
+                        </div>
+                    </div>
+                    <form>
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon3">From:</span>
+                              </div>
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4">
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon3">To:</span>
+                              </div>
+                             <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+                             <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="row">
+                        <div class="col text-left my-2">
+                            <h5 class="text-primary"><i class="fas fa-sitemap text-warning"></i>  Type Filters</h5>
+                        </div>
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">Other</span>
+                        </div>
+                        <select class="selectpicker form-control" multiple data-style="btn-light border"  multiple title="None" data-actions-box="true">
+                            <option>Kidnapping</option>
+                            <option>Forgery</option>
+                            <option>Fraud</option>
+                            <option>Dangerous Drugs</option>
+                            <option>Sex Offenses</option>
+                            <option>Family Offense</option>
+                            <option>Gambling</option>
+                            <option>Liquor</option>
+                            <option>Obstructing The Police</option>
+                            <option>Obstructing Judiciary</option>
+                            <option>Disorderly Conduct</option>
+                            <option>Ouil</option>
+                            <option>Other</option>
+                            <option>Runaway</option>
+                            <option>Miscellaneous</option>
+                            <option>Solicitation</option>
+                          </select>                          
+                      </div>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">Violent</span>
+                        </div>
+                        <select class="selectpicker selectpicker2 form-control select-violent" multiple data-style="btn-light border" multiple title="None" data-actions-box="true">
+                            <option>Sexual Assault</option>
+                            <option>Sex Offenses</option>
+                            <option>Robbery</option>
+                            <option>Assault</option>
+                            <option>Aggravated Assault</option>
+                            <option>Homicide</option>
+                            <option>Justifiable Homicide</option>
+                          </select>                          
+                      </div>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">Property</span>
+                        </div>
+                        <select class="selectpicker selectpicker3 form-control" multiple data-style="btn-light border"  multiple title="None" data-actions-box="true">
+                            <option>Arson</option>
+                            <option>Extortion</option>
+                            <option>Burglary</option>
+                            <option>Larceny</option>
+                            <option>Stolen Vehicle</option>
+                            <option>Stolen Property</option>
+                            <option>Damage To Property</option>
+                          </select>                          
+                      </div>
+                    <div class="row">
+                        <div class="col text-center mt-2 mb-3">
+                            <button type="button" class="btn btn-primary" id="filterTest">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+                <div class="col bg-light border rounded mt-3 flex-grow-1" id="crimeContents">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h5 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h5>
+                                <div class="input-group my-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">Crime Type:</span>
+                                      </div>
+                                    <span class="form-control">Robbery</span>
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">Crime Date:</span>
+                                      </div>
+                                    <span class="form-control">01/01/2020</span>
+                                </div>
+                                <div class="input-group my-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
+                                      </div>
+                                    <span class="form-control">Detroit</span>
+                                </div>
+                                <div class="input-group my-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">Filter Results Total:</span>
+                                      </div>
+                                    <span class="form-control">10</span>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9 map mb-3 mt-3">
+                <div id="map" class="border rounded shadow"></div>
+                <div id="info-pane" class="leaflet-bar chart-container">
+                    <canvas id="chartCanvas" width="215" height="215"></canvas>
+                </div>
+                <div id="info-pane-legend" class="leaflet-bar legend-container">
+                    <div class="col" id="legendContents">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet Easy Button -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js"
+    integrity="sha512-cMQ5e58BDuu1pr9BQ/eGRn6HaR6Olh0ofcHFWe5XesdCITVuSBiBZZbhCijBe5ya238f/zMMRYIMIIg1jxv4sQ=="
+    crossorigin=""></script>
+
+    <!-- Load Leaflet MarkerCluster and Esri Leaflet Cluster from CDN -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
+    integrity="sha512-MQlyPV+ol2lp4KodaU/Xmrn+txc1TP15pOBF/2Sfre7MRsA/pB4Vy58bEqe9u7a7DczMLtU5wT8n7OblJepKbg=="
+    crossorigin=""></script>
+    <script src="https://unpkg.com/esri-leaflet-cluster@2.0.1/dist/esri-leaflet-cluster.js"
+    integrity="sha512-2/Nwrks+A2omjKeWrF4TKFLIrUbAhSl8EDEm6xunuwXXYqMoJI71PZtlW0/vqt9d3DOyP1md/bzAnNH2KuAhaQ=="
+    crossorigin=""></script>
+
+    <!-- Load Chart.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+    <!-- Bootstrap DatePicker (TempusDominus) -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Bootstrap Select -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>
+    
+    
+    <script src="js.js"></script>
+
+</body>
+
+</html>
