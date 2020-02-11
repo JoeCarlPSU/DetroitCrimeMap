@@ -21,6 +21,11 @@
     integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ=="
     crossorigin="">
 
+    <!-- Load Esri Leaflet Geocoder from CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.css"
+    integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
+    crossorigin="">
+
     <!-- Bootstrap DatePicker (TempusDominus)-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 
@@ -40,7 +45,7 @@
 <body>
 
     <nav class="shadow navbar navbar-light bg-secondary">
-          <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span class="my-auto ml-3">Detroit Crime Viewer</span></a>
+          <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span class="my-auto ml-3 text-bold">Detroit Crime Viewer</span></a>
     </nav>
 
     <div class="container-fluid intro bg-primary">
@@ -90,7 +95,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">Other</span>
                         </div>
-                        <select class="selectpicker form-control" multiple data-style="btn-light border"  multiple title="None" data-actions-box="true">
+                        <select class="selectpicker form-control" multiple data-style="btn-light border"  multiple title="All" data-actions-box="true">
                             <option>Kidnapping</option>
                             <option>Forgery</option>
                             <option>Fraud</option>
@@ -113,28 +118,29 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">Violent</span>
                         </div>
-                        <select class="selectpicker selectpicker2 form-control select-violent" multiple data-style="btn-light border" multiple title="None" data-actions-box="true">
-                            <option>Sexual Assault</option>
-                            <option>Sex Offenses</option>
-                            <option>Robbery</option>
-                            <option>Assault</option>
+                        <select class="selectpicker selectpicker2 form-control select-violent" multiple data-style="btn-light border" multiple title="All" data-actions-box="true">
                             <option>Aggravated Assault</option>
+                            <option>Assault</option>
                             <option>Homicide</option>
                             <option>Justifiable Homicide</option>
+                            <option>Robbery</option>
+                            <option>Sex Offenses</option>
+                            <option>Sexual Assault</option>
+                            <option>Weapons Offenses</option>
                           </select>                          
                       </div>
                       <div class="input-group mb-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">Property</span>
                         </div>
-                        <select class="selectpicker selectpicker3 form-control" multiple data-style="btn-light border"  multiple title="None" data-actions-box="true">
+                        <select class="selectpicker selectpicker3 form-control" multiple data-style="btn-light border"  multiple title="All" data-actions-box="true">
                             <option>Arson</option>
-                            <option>Extortion</option>
                             <option>Burglary</option>
-                            <option>Larceny</option>
-                            <option>Stolen Vehicle</option>
-                            <option>Stolen Property</option>
                             <option>Damage To Property</option>
+                            <option>Extortion</option>
+                            <option>Larceny</option>
+                            <option>Stolen Property</option>
+                            <option>Stolen Vehicle</option>
                           </select>                          
                       </div>
                     <div class="row">
@@ -146,33 +152,10 @@
                 </form>
                 <div class="col bg-light border rounded mt-3 flex-grow-1" id="crimeContents">
                     <div class="row">
-                        <div class="col text-center my-2">
-                            <h5 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h5>
-                                <div class="input-group my-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon3">Crime Type:</span>
-                                      </div>
-                                    <span class="form-control">Robbery</span>
-                                </div>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon3">Crime Date:</span>
-                                      </div>
-                                    <span class="form-control">01/01/2020</span>
-                                </div>
-                                <div class="input-group my-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
-                                      </div>
-                                    <span class="form-control">Detroit</span>
-                                </div>
-                                <div class="input-group my-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon3">Filter Results Total:</span>
-                                      </div>
-                                    <span class="form-control">10</span>
-                                </div>
+                        <div class="col-12 text-center my-2">
+                            <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h4>
                         </div>
+                        <div class="col-12 text-primary text-center font-italic mt-2">Click a crime to get more information</div>
                     </div>
                 </div>
             </div>
@@ -211,6 +194,11 @@
     crossorigin=""></script>
     <script src="https://unpkg.com/esri-leaflet-cluster@2.0.1/dist/esri-leaflet-cluster.js"
     integrity="sha512-2/Nwrks+A2omjKeWrF4TKFLIrUbAhSl8EDEm6xunuwXXYqMoJI71PZtlW0/vqt9d3DOyP1md/bzAnNH2KuAhaQ=="
+    crossorigin=""></script>
+
+    <!-- Load Esri Leaflet Geocoder from CDN -->
+    <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.js"
+    integrity="sha512-8twnXcrOGP3WfMvjB0jS5pNigFuIWj4ALwWEgxhZ+mxvjF5/FBPVd5uAxqT8dd2kUmTVK9+yQJ4CmTmSg/sXAQ=="
     crossorigin=""></script>
 
     <!-- Leaflet Heatmap -->

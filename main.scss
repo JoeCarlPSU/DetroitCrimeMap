@@ -1,5 +1,10 @@
-$primary: #004445;
-$secondary: #feb70d;
+$theme-colors: (
+  "primary": #004445,
+  "danger": #feb70d
+);
+
+$primary: map-get($map: $theme-colors, $key: primary);
+$secondary: map-get($map: $theme-colors, $key: danger);
 
 @import "node_modules/bootstrap/scss/bootstrap";
 // @import "node_modules/leaflet/dist/leaflet.css";
@@ -44,6 +49,10 @@ body {
 //     border:1px solid green;
 // }
 
+.dropdown-item:hover, .selected:hover {
+  background-color: map-get($map: $theme-colors, $key: danger);
+}
+
 h4 {
   text-align: center;
 }
@@ -79,4 +88,8 @@ h4 {
   background: white;
   overflow: auto;
   opacity: 0.9;
+}
+
+.legend-text {
+    text-transform: capitalize;
 }

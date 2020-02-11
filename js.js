@@ -59,6 +59,18 @@ $(document).ready(function() {
     }
   ).addTo(map);
 
+  //ESRI Search control
+  const searchControl = L.esri.Geocoding.geosearch().addTo(map);
+
+  let results = L.layerGroup().addTo(map);
+
+  searchControl.on('results', function (data) {
+    results.clearLayers();
+    for (let i = data.results.length - 1; i >= 0; i--) {
+      results.addLayer(L.marker(data.results[i].latlng));
+    }
+  });
+
   //Function to get colors for point feature on the map - this will work with the Leaflet API
   let getColor = feature => {
     switch (feature.properties.Type) {
@@ -122,6 +134,8 @@ $(document).ready(function() {
         return { color: "#bc80bd" };
       case "SOLICITATION":
         return { color: "#ccebc5" };
+      case "WEAPONS OFFENSES":
+        return { color: "#c51b8a" };
     }
   };
 
@@ -188,6 +202,8 @@ $(document).ready(function() {
         return "#bc80bd";
       case "SOLICITATION":
         return "#ccebc5";
+      case "WEAPONS OFFENSES":
+        return "#c51b8a"
     }
   };
 
@@ -203,37 +219,38 @@ $(document).ready(function() {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Crime Type:</span>
                           </div>
-                        <span class="form-control">${
-                          e.target.feature.properties.Type
-                        }</span>
+                        <span class="form-control">
+                        ${e.target.feature.properties.Type}
+                        </span>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Crime Date:</span>
                           </div>
-                        <span class="form-control">${new Date(
-                          e.target.feature.properties.Date
+                        <span class="form-control">
+                        ${new Date(e.target.feature.properties.Date
                         ).getUTCMonth() + 1}/${new Date(
-      e.target.feature.properties.Date
-    ).getUTCDate()}/${new Date(
-      e.target.feature.properties.Date
-    ).getUTCFullYear()}</span>
+                          e.target.feature.properties.Date
+                        ).getUTCDate()}/${new Date(
+                          e.target.feature.properties.Date
+                        ).getUTCFullYear()}
+                    </span>
                     </div>
                     <div class="input-group my-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
                           </div>
-                        <span class="form-control">${
-                          e.target.feature.properties.NeighborHood
-                        }</span>
+                        <span class="form-control">
+                        ${e.target.feature.properties.NeighborHood}
+                        </span>
                     </div>
                     <div class="input-group my-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Address:</span>
                           </div>
-                        <span class="form-control">${
-                          e.target.feature.properties.Address
-                        }</span>
+                        <span class="form-control">
+                        ${e.target.feature.properties.Address}
+                        </span>
                     </div>
                 <!-- </div> -->
             </div>
@@ -250,7 +267,7 @@ $(document).ready(function() {
   };
 
   let legendPopulate = legend => {
-    $("#legendContents").append(`<div class="row text-primary">
+    $("#legendContents").append(`<div class="row text-primary legend-text">
       <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(
         legend
       )}"></i>  ${legend}
@@ -544,8 +561,8 @@ $(document).ready(function() {
         "https://services9.arcgis.com/6EuFgO4fLTqfNOhu/arcgis/rest/services/Detroit_Crime_Data/FeatureServer/0"
     });
 
-    let startDate = $("#datetimepicker4").datetimepicker("date")._i;
-    let endDate = $("#datetimepicker8").datetimepicker("date")._i;
+    startDate = $("#datetimepicker4").data("date");
+    endDate = $("#datetimepicker8").data("date");
     let other = $(".selectpicker").val();
     let violent = $(".selectpicker2").val();
     let property = $(".selectpicker3").val();
@@ -554,22 +571,16 @@ $(document).ready(function() {
     let crimeArray = other.concat(violent, property);
     let queryItem = ``;
 
+    //Build the where clause based on if it is the first pass in the loop
     for (let i = 0; i < crimeArray.length; i++) {
-      if (i === 0) {
-        queryItem += `Type = '${crimeArray[i].toUpperCase().toString()}'`;
-      } else {
-        queryItem += ` OR Type = '${crimeArray[i].toUpperCase().toString()}'`;
-      }
+      (i === 0) ? queryItem += `Type = '${crimeArray[i].toUpperCase().toString()}'` : queryItem += ` OR Type = '${crimeArray[i].toUpperCase().toString()}'`
     }
-
-    if (crimeArray.length > 0) {
-      queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})`;
-    } else {
-      queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`;
-    }
-
+    // If length of crime is less than 0, only dates will need to be filtered
+    (crimeArray.length > 0) ? queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})` : queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`
+    
+    //Set the where clause
+    console.log(queryString)
     query.where(`${queryString}`);
-    console.log(queryString);
 
     query.run(function(error, featureCollection, response) {
       if (error) {
@@ -687,8 +698,6 @@ $(document).ready(function() {
       });
       return data;
     }
-
-    function chartColors() {}
 
     removeData(chart);
     addData(chart, Array.from(chartLabels()), chartData(), chartColorsArray);
