@@ -59,14 +59,200 @@ $(document).ready(function() {
   ).addTo(map);
 
 
+  //Function to get colors for point feature on the map - this will work with the Leaflet API
+  let getColor = feature => {
+    switch (feature.properties.Type) {
+      case "HOMICIDE":
+        return { color: "#b10026" };
+      case "SEXUAL ASSAULT":
+        return { color: "#e31a1c" };
+      case "SEX OFFENSES":
+        return { color: "#fc4e2a" };
+      case "ROBBERY":
+        return { color: "#fd8d3c" };
+      case "ASSAULT":
+        return { color: "#feb24c" };
+      case "AGGRAVATED ASSAULT":
+        return { color: "#fed976" };
+      case "JUSTIFIABLE HOMICIDE":
+        return { color: "#ffffb2" };
+      case "ARSON":
+        return { color: "#0c2c84" };
+      case "EXTORTION":
+        return { color: "#225ea8" };
+      case "BURGLARY":
+        return { color: "#1d91c0" };
+      case "LARCENY":
+        return { color: "#41b6c4" };
+      case "STOLEN VEHICLE":
+        return { color: "#7fcdbb" };
+      case "STOLEN PROPERTY":
+        return { color: "#c7e9b4" };
+      case "DAMAGE TO PROPERTY":
+        return { color: "#0c2c84" }; 
+      case "KIDNAPPING":
+        return { color: "#d8daeb" };
+      case "FORGERY":
+        return { color: "#b2abd2" };
+      case "FRAUD":
+        return { color: "#8073ac" };
+      case "DANGEROUS DRUGS":
+        return { color: "#542788" };
+      case "SEX OFFENSES":
+        return { color: "#2d004b" };
+      case "FAMILY OFFENSE":
+        return { color: "#80cdc1" };
+      case "GAMBLING":
+        return { color: "#35978f" };
+      case "LIQUOR":
+        return { color: "#01665e" };
+      case "OBSTRUCTING THE POLICE":
+        return { color: "#003c30" };
+      case "OBSTRUCTING JUDICIARY":
+        return { color: "#006837" };
+      case "DISORDERLY CONDUCT":
+        return { color: "#1a9850" };
+      case "OUIL":
+        return { color: "#66bd63" };
+      case "OTHER":
+        return { color: "#fb8072" };
+      case "RUNAWAY":
+        return { color: "#80b1d3" };
+      case "MISCELLANEOUS":
+        return { color: "#bc80bd" };
+      case "SOLICITATION":
+        return { color: "#ccebc5" };        
+    }
+  }
+
+  //Function to get colors for chart features and the legend
+  let getLegendColor = legend => {
+    switch(legend){
+      case "HOMICIDE":
+          return "#b10026"
+        case "SEXUAL ASSAULT":
+          return "#e31a1c"
+        case "SEX OFFENSES":
+          return "#fc4e2a"
+        case "ROBBERY":
+          return "#fd8d3c"
+        case "ASSAULT":
+          return "#feb24c"
+        case "AGGRAVATED ASSAULT":
+          return "#fed976"
+        case "JUSTIFIABLE HOMICIDE":
+          return "#ffffb2" 
+        case "ARSON":
+          return "#0c2c84"
+        case "EXTORTION":
+          return "#225ea8"
+        case "BURGLARY":
+          return "#1d91c0"
+        case "LARCENY":
+          return "#41b6c4"
+        case "STOLEN VEHICLE":
+          return "#7fcdbb"
+        case "STOLEN PROPERTY":
+          return "#c7e9b4"
+        case "DAMAGE TO PROPERTY":
+          return "#0c2c84"
+        case "KIDNAPPING":
+          return "#d8daeb";
+        case "FORGERY":
+          return "#b2abd2";
+        case "FRAUD":
+          return "#8073ac";
+        case "DANGEROUS DRUGS":
+          return "#542788";
+        case "SEX OFFENSES":
+          return "#2d004b";
+        case "FAMILY OFFENSE":
+          return "#80cdc1";
+        case "GAMBLING":
+          return "#35978f";
+        case "LIQUOR":
+          return "#01665e";
+        case "OBSTRUCTING THE POLICE":
+          return "#003c30";
+        case "OBSTRUCTING JUDICIARY":
+          return "#006837";
+        case "DISORDERLY CONDUCT":
+          return "#1a9850";
+        case "OUIL":
+          return "#66bd63";
+        case "OTHER":
+          return "#fb8072";
+        case "RUNAWAY":
+          return "#80b1d3";
+        case "MISCELLANEOUS":
+          return "#bc80bd"
+        case "SOLICITATION":
+          return "#ccebc5";     
+    }
+  }
+
+  //This function will populate the 'Crime Overview Panel' when a user clicks a point
+  let attributeDataPopulate = e => {
+    $('#crimeContents').empty()
+          $('#crimeContents').append(`
+          <div class="row">
+            <div class="col text-center my-2">
+                <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h4>
+                <!-- <div class="row text-left"> -->
+                    <div class="input-group my-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Crime Type:</span>
+                          </div>
+                        <span class="form-control">${e.target.feature.properties.Type}</span>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Crime Date:</span>
+                          </div>
+                        <span class="form-control">${new Date(e.target.feature.properties.Date).getUTCMonth() + 1}/${new Date(e.target.feature.properties.Date).getUTCDate()}/${new Date(e.target.feature.properties.Date).getUTCFullYear()}</span>
+                    </div>
+                    <div class="input-group my-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
+                          </div>
+                        <span class="form-control">${e.target.feature.properties.NeighborHood}</span>
+                    </div>
+                    <div class="input-group my-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">Address:</span>
+                          </div>
+                        <span class="form-control">${e.target.feature.properties.Address}</span>
+                    </div>
+                <!-- </div> -->
+            </div>
+        </div>
+      `)
+  }
+
+  let legendPopulate = legend => {
+    $('#legendContents').append(`<div class="row text-primary">
+      <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(legend)}"></i>  ${legend}
+        </div>
+        `)
+  }
+
+  function onEachFeature(feature, layer) {
+    layer.on({
+      click: attributeDataPopulate
+    })
+  }
+
+
   //Initial starter query when opening the map - this will match the dates that are set as the default dates.  This will help with preformance
   let query = L.esri.query({
     url:
       "https://services9.arcgis.com/6EuFgO4fLTqfNOhu/arcgis/rest/services/Detroit_Crime_Data/FeatureServer/0"
   });
 
-
+  //Set the query to filter all crime dates but only on the start & end dates specified
   query.where(`DATE > '${mapStartDate}' AND DATE < '${mapEndDate}'`);
+
+  //Order the data recieved by Ascending
   query.orderBy('Type', 'ASC')
 
   query.run(function(error, featureCollection, response) {
@@ -79,7 +265,10 @@ $(document).ready(function() {
     let legendItems = new Set()
 
     //Create a crimeData cluster group
-    crimeData = L.markerClusterGroup();
+    crimeData = L.markerClusterGroup({
+      // spiderfyOnMaxZoom: true,
+      // disableClusteringAtZoom: 16
+    });
 
     //Create a geoJSON from the featureCollection that is returned from the ESRI Leaflet Query
     let geojsonMarkerOptions = {
@@ -89,50 +278,6 @@ $(document).ready(function() {
       fillOpacity: 1
     };
 
-    function onEachFeature(feature, layer) {
-      // does this feature have a property named popupContent?
-      layer.on({
-        click: function(e){
-          console.log(feature.properties)
-          $('#crimeContents').empty()
-          $('#crimeContents').append(`
-          <div class="row">
-            <div class="col text-center my-2">
-                <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h4>
-                <!-- <div class="row text-left"> -->
-                    <div class="input-group my-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3">Crime Type:</span>
-                          </div>
-                        <span class="form-control">${feature.properties.Type}</span>
-                    </div>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3">Crime Date:</span>
-                          </div>
-                        <span class="form-control">${new Date(feature.properties.Date).getUTCMonth() + 1}/${new Date(feature.properties.Date).getUTCDate()}/${new Date(feature.properties.Date).getUTCFullYear()}</span>
-                    </div>
-                    <div class="input-group my-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
-                          </div>
-                        <span class="form-control">${feature.properties.NeighborHood}</span>
-                    </div>
-                    <div class="input-group my-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3">Address:</span>
-                          </div>
-                        <span class="form-control">${feature.properties.Address}</span>
-                    </div>
-                <!-- </div> -->
-            </div>
-        </div>
-      `)
-        }
-      })
-    }
-
-
     //Colors are based off Color brewer
     let geojson = L.geoJSON(featureCollection, {
       pointToLayer: function(feature, latlng) {
@@ -140,70 +285,7 @@ $(document).ready(function() {
         return L.circle(latlng, geojsonMarkerOptions);
       },
       onEachFeature: onEachFeature,
-      style: function(feature) {
-        switch (feature.properties.Type) {
-          case "HOMICIDE":
-            return { color: "#b10026" };
-          case "SEXUAL ASSAULT":
-            return { color: "#e31a1c" };
-          case "SEX OFFENSES":
-            return { color: "#fc4e2a" };
-          case "ROBBERY":
-            return { color: "#fd8d3c" };
-          case "ASSAULT":
-            return { color: "#feb24c" };
-          case "AGGRAVATED ASSAULT":
-            return { color: "#fed976" };
-          case "JUSTIFIABLE HOMICIDE":
-            return { color: "#ffffb2" };
-          case "ARSON":
-            return { color: "#0c2c84" };
-          case "EXTORTION":
-            return { color: "#225ea8" };
-          case "BURGLARY":
-            return { color: "#1d91c0" };
-          case "LARCENY":
-            return { color: "#41b6c4" };
-          case "STOLEN VEHICLE":
-            return { color: "#7fcdbb" };
-          case "STOLEN PROPERTY":
-            return { color: "#c7e9b4" };
-          case "DAMAGE TO PROPERTY":
-            return { color: "#0c2c84" }; 
-          case "KIDNAPPING":
-          return { color: "#d8daeb" };
-          case "FORGERY":
-            return { color: "#b2abd2" };
-          case "FRAUD":
-            return { color: "#8073ac" };
-          case "DANGEROUS DRUGS":
-            return { color: "#542788" };
-          case "SEX OFFENSES":
-            return { color: "#2d004b" };
-          case "FAMILY OFFENSE":
-            return { color: "#80cdc1" };
-          case "GAMBLING":
-            return { color: "#35978f" };
-          case "LIQUOR":
-            return { color: "#01665e" };
-          case "OBSTRUCTING THE POLICE":
-            return { color: "#003c30" };
-          case "OBSTRUCTING JUDICIARY":
-            return { color: "#006837" };
-          case "DISORDERLY CONDUCT":
-            return { color: "#1a9850" };
-          case "OUIL":
-            return { color: "#66bd63" };
-          case "OTHER":
-            return { color: "#fb8072" };
-          case "RUNAWAY":
-            return { color: "#80b1d3" };
-          case "MISCELLANEOUS":
-            return { color: "#bc80bd" };
-          case "SOLICITATION":
-            return { color: "#ccebc5" };           
-        }
-      }
+      style: getColor
     });
 
     //Add GeoJSON that was created to the crimeData Cluster Grouping
@@ -212,45 +294,12 @@ $(document).ready(function() {
     //Add Crime Data to map as a layer
     map.addLayer(crimeData);
 
-    let getLegendColor = legend => {
-      switch(legend){
-        case "HOMICIDE":
-            return "#b10026"
-          case "SEXUAL ASSAULT":
-            return "#e31a1c"
-          case "SEX OFFENSES":
-            return "#fc4e2a"
-          case "ROBBERY":
-            return "#fd8d3c"
-          case "ASSAULT":
-            return "#feb24c"
-          case "AGGRAVATED ASSAULT":
-            return "#fed976"
-          case "JUSTIFIABLE HOMICIDE":
-            return "#ffffb2" 
-          case "ARSON":
-            return "#0c2c84"
-          case "EXTORTION":
-            return "#225ea8"
-          case "BURGLARY":
-            return "#1d91c0"
-          case "LARCENY":
-            return "#41b6c4"
-          case "STOLEN VEHICLE":
-            return "#7fcdbb"
-          case "STOLEN PROPERTY":
-            return "#c7e9b4"
-          case "DAMAGE TO PROPERTY":
-            return "#0c2c84"
-      }
-    }
-
     //Chart
     let data = [];
     let chartTotals = [];
     let chartColorsArray = [];
     let config = {
-      type: "doughnut",
+      type: "pie",
       data: {
         labels: Array.from(chartLabels()),
         datasets: [{
@@ -259,6 +308,12 @@ $(document).ready(function() {
         }]
       },
       options: {
+        //Turn off solid white stroke
+        elements: {
+          arc: {
+              borderWidth: 0
+          }
+        },
         legend: {
           display: false,
         },
@@ -276,7 +331,6 @@ $(document).ready(function() {
       function objectCreation(chartItems){
         chartItems = Array.from(chartItems).sort()
         for (let item of chartItems){
-          console.log(item)
           chartTotals.push({
             item: item,
             total: 0,
@@ -316,10 +370,6 @@ $(document).ready(function() {
         })
         return data
       }
-
-      function chartColors(){
-
-      }
   
 
 
@@ -329,10 +379,7 @@ $(document).ready(function() {
 
     //With the set created during the geoJSON function, the legend can now be built dynamically
     for (let legend of legendItems){
-      $('#legendContents').append(`<div class="row text-primary">
-      <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(legend)}"></i>  ${legend}
-        </div>
-        `)
+      legendPopulate(legend)
     }
   });
 
@@ -401,7 +448,6 @@ $(document).ready(function() {
   $("#filterTest").on("click", () => {
     //If Crime data cluster group is present - remove and add new one
     // crimeData.remove()
-    console.log(crimeData)
 
     let query = L.esri.query({
       url:
@@ -416,7 +462,6 @@ $(document).ready(function() {
 
     //assemble all arrays together as one array
     let crimeArray = other.concat(violent, property)
-    console.log(crimeArray)
     let queryItem = ``;
 
     for (let i = 0; i < crimeArray.length; i++) {
@@ -428,13 +473,12 @@ $(document).ready(function() {
     }
 
     if (crimeArray.length > 0){
-      queryString = `DATE > '${startDate}' AND DATE < '${endDate}' AND ${queryItem}`;
+      queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})`;
     } else {
       queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`;
     }
 
     query.where(`${queryString}`);
-
     console.log(queryString)
 
     query.run(function(error, featureCollection, response) {
@@ -444,8 +488,10 @@ $(document).ready(function() {
       } else if (featureCollection.features.length > 0){
         crimeData.remove()
         //Create a crimeData cluster group
-        crimeData = L.markerClusterGroup();
-
+        crimeData = L.markerClusterGroup({
+          // spiderfyOnMaxZoom: true,
+          // disableClusteringAtZoom: 16
+        });
         //Create a geoJSON from the featureCollection that is returned from the ESRI Leaflet Query
         let geojsonMarkerOptions = {
           radius: 10,
@@ -454,43 +500,25 @@ $(document).ready(function() {
           fillOpacity: 1
         };
 
+        //Create a new empty set
+        let legendItems = new Set()
+
+
         let geojson = L.geoJSON(featureCollection, {
           pointToLayer: function(feature, latlng) {
+            legendItems.add(feature.properties.Type)
             return L.circle(latlng, geojsonMarkerOptions);
           },
-          style: function(feature) {
-            switch (feature.properties.Type) {
-              case "HOMICIDE":
-                return { color: "#b10026" };
-              case "SEXUAL ASSAULT":
-                return { color: "#e31a1c" };
-              case "SEX OFFENSES":
-                return { color: "#fc4e2a" };
-              case "ROBBERY":
-                return { color: "#fd8d3c" };
-              case "ASSAULT":
-                return { color: "#feb24c" };
-              case "AGGRAVATED ASSAULT":
-                return { color: "#fed976" };
-              case "JUSTIFIABLE HOMICIDE":
-                return { color: "#ffffb2" };
-              case "ARSON":
-                return { color: "#0c2c84" };
-              case "EXTORTION":
-                return { color: "#225ea8" };
-              case "BURGLARY":
-                return { color: "#1d91c0" };
-              case "LARCENY":
-                return { color: "#41b6c4" };
-              case "STOLEN VEHICLE":
-                return { color: "#7fcdbb" };
-              case "STOLEN PROPERTY":
-                return { color: "#c7e9b4" };
-              case "DAMAGE TO PROPERTY":
-                return { color: "#0c2c84" };          
-            }
-          }
+          onEachFeature: onEachFeature,
+          style: getColor
         });
+
+        //With the set created during the geoJSON function, the legend can now be built dynamically
+        //Remove current legend
+        $('#legendContents').empty()
+        for (let legend of legendItems){
+          legendPopulate(legend)
+        }
 
         //Add GeoJSON that was created to the crimeData Cluster Grouping
         crimeData.addLayer(geojson);
@@ -519,51 +547,12 @@ $(document).ready(function() {
     }
 
     function addData(chart, label, data, color) {
-      console.log(label)
-      // console.log(data.sort())
-      console.log(color)
-      //Order is getting messed up, affecting color scheme
+      //Sort the labels
       label = label.sort()
-      console.log(data)
       chart.data.labels = label;
       chart.data.datasets[0].data = data;
       chart.data.datasets[0].backgroundColor = color
       chart.update();
-    }
-
-    let getLegendColor = legend => {
-      switch(legend){
-        case "HOMICIDE":
-            return "#b10026"
-          case "SEXUAL ASSAULT":
-            return "#e31a1c"
-          case "SEX OFFENSES":
-            return "#fc4e2a"
-          case "ROBBERY":
-            return "#fd8d3c"
-          case "ASSAULT":
-            return "#feb24c"
-          case "AGGRAVATED ASSAULT":
-            return "#fed976"
-          case "JUSTIFIABLE HOMICIDE":
-            return "#ffffb2" 
-          case "ARSON":
-            return "#0c2c84"
-          case "EXTORTION":
-            return "#225ea8"
-          case "BURGLARY":
-            return "#1d91c0"
-          case "LARCENY":
-            return "#41b6c4"
-          case "STOLEN VEHICLE":
-            return "#7fcdbb"
-          case "STOLEN PROPERTY":
-            return "#c7e9b4"
-          case "DAMAGE TO PROPERTY":
-            return "#0c2c84"
-          default:
-            return "#00ff00"
-      }
     }
 
     //Chart
@@ -597,7 +586,6 @@ $(document).ready(function() {
       }
 
       function chartData(){
-        console.log(chartTotals)
         crimeData.eachLayer(function (e) {
           if(map.getBounds().contains(e.getLatLng()) ){
              chartTotals.forEach(function(chartTotals){
@@ -608,8 +596,6 @@ $(document).ready(function() {
           }
         })
         chartTotals.forEach(function(chartTotal){
-          console.log(chartTotal.total)
-          console.log(chartTotal.color)
           data.push(chartTotal.total)
           chartColorsArray.push(chartTotal.color)
         })
@@ -630,5 +616,3 @@ $(document).ready(function() {
   map.on('zoom move', updateChart);
   
 });
-
-// "DATE > '01/22/2020' AND DATE < '01/31/2020' AND Type = 'HOMICIDE'"

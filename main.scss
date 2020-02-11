@@ -1,108 +1,82 @@
-
-
 $primary: #004445;
-$secondary: #FEB70D;
-
+$secondary: #feb70d;
 
 @import "node_modules/bootstrap/scss/bootstrap";
 // @import "node_modules/leaflet/dist/leaflet.css";
 
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
 
-body{
-    overflow: hidden;
+body {
+  overflow: hidden;
 }
 
-.navbar-brand{
-        align-items: center;
-        display: flex;
+.navbar-brand {
+  align-items: center;
+  display: flex;
 }
 
-.content{
-    height: calc(100vh - 66px - 32px);
-    overflow: auto;
+.content {
+  height: calc(100vh - 66px - 32px);
+  overflow: auto;
 }
 
-.map{
-    height: calc(100vh - 66px - 32px);
-    overflow: hidden;
+.map {
+  height: calc(100vh - 66px - 32px);
+  overflow: hidden;
 }
 
 .leaflet-bar a {
-    color: #004445;
-  }
-// .input-group-prepend {
-//     min-width:60%;
-//     text-align:left;
-// }
-
-//   .input-group-prepend label {
-//     width: 100%;
-//     overflow: hidden;
-//   }
+  color: #004445;
+}
 
 /* Drafting Container */
-.drafting-container{
-    position: absolute;
-    width: 500px;
-    height: calc(100vh - 66px - 32px);
-    z-index: 9999;
-    display: visible;
+.drafting-container {
+  position: absolute;
+  width: 500px;
+  height: calc(100vh - 66px - 32px);
+  z-index: 9999;
+  display: visible;
 }
 
 // .row{
 //     border:1px solid green;
 // }
 
-h4{
-    text-align: center;
+h4 {
+  text-align: center;
 }
 
 /* Map */
-#map{
-    height: 100%;
-    overflow: hidden;
+#map {
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Chart */
-// .chart-container {
-//     height: 245px;
-//     width: 245px;
-//     display: none;
-//   }
-
-  #info-pane {
-    position: absolute;
-    height: 245px;
-    width: 245px;
-    display: visible;
-    bottom: 20px;
-    right: 30px;
-    z-index: 400;
-    padding: 1em;
-    background: white;
-    opacity: 0.7;
-  }
-
-
-//   /* Legend */
-// .legend-container {
-//     height: 245px;
-//     width: 245px;
-//     display: visible;
-//   }
+#info-pane {
+  position: absolute;
+  height: 245px;
+  width: 245px;
+  display: visible;
+  bottom: 20px;
+  right: 30px;
+  z-index: 400;
+  padding: 1em;
+  background: white;
+  opacity: 0.7;
+}
 
 #info-pane-legend {
-    position: absolute;
-    height: 100%;
-    width: 300px;
-    display: visible;
-    bottom: 0px;
-    left: 15px;
-    z-index: 400;
-    padding: 1em;
-    background: white;
-    overflow: auto;
-  }
+  position: absolute;
+  height: auto;
+  width: 300px;
+  display: visible;
+  bottom: 0px;
+  left: 15px;
+  z-index: 400;
+  padding: 1em;
+  background: white;
+  overflow: auto;
+  opacity: 0.9;
+}
