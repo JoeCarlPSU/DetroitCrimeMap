@@ -1,7 +1,10 @@
+//Global Variables
 let map;
+let geojson;
+let heatmaplayer;
 let crimeData;
-let mapStartDate = "1/22/2020"
-let mapEndDate = "1/31/2020"
+let mapStartDate = "1/22/2020";
+let mapEndDate = "1/31/2020";
 let chart;
 
 $(document).ready(function() {
@@ -28,7 +31,6 @@ $(document).ready(function() {
     });
   });
 
-
   //Home location
   // Fill in an appropriate lat/long
   let home = [];
@@ -40,7 +42,6 @@ $(document).ready(function() {
   map = L.map("map", {
     zoomControl: false
   }).setView([42.33513214181834, -83.05493701900036], 17);
-
 
   L.control
     .zoom({
@@ -57,7 +58,6 @@ $(document).ready(function() {
       maxZoom: 19
     }
   ).addTo(map);
-
 
   //Function to get colors for point feature on the map - this will work with the Leaflet API
   let getColor = feature => {
@@ -89,7 +89,7 @@ $(document).ready(function() {
       case "STOLEN PROPERTY":
         return { color: "#c7e9b4" };
       case "DAMAGE TO PROPERTY":
-        return { color: "#0c2c84" }; 
+        return { color: "#0c2c84" };
       case "KIDNAPPING":
         return { color: "#d8daeb" };
       case "FORGERY":
@@ -121,80 +121,80 @@ $(document).ready(function() {
       case "MISCELLANEOUS":
         return { color: "#bc80bd" };
       case "SOLICITATION":
-        return { color: "#ccebc5" };        
+        return { color: "#ccebc5" };
     }
-  }
+  };
 
   //Function to get colors for chart features and the legend
   let getLegendColor = legend => {
-    switch(legend){
+    switch (legend) {
       case "HOMICIDE":
-          return "#b10026"
-        case "SEXUAL ASSAULT":
-          return "#e31a1c"
-        case "SEX OFFENSES":
-          return "#fc4e2a"
-        case "ROBBERY":
-          return "#fd8d3c"
-        case "ASSAULT":
-          return "#feb24c"
-        case "AGGRAVATED ASSAULT":
-          return "#fed976"
-        case "JUSTIFIABLE HOMICIDE":
-          return "#ffffb2" 
-        case "ARSON":
-          return "#0c2c84"
-        case "EXTORTION":
-          return "#225ea8"
-        case "BURGLARY":
-          return "#1d91c0"
-        case "LARCENY":
-          return "#41b6c4"
-        case "STOLEN VEHICLE":
-          return "#7fcdbb"
-        case "STOLEN PROPERTY":
-          return "#c7e9b4"
-        case "DAMAGE TO PROPERTY":
-          return "#0c2c84"
-        case "KIDNAPPING":
-          return "#d8daeb";
-        case "FORGERY":
-          return "#b2abd2";
-        case "FRAUD":
-          return "#8073ac";
-        case "DANGEROUS DRUGS":
-          return "#542788";
-        case "SEX OFFENSES":
-          return "#2d004b";
-        case "FAMILY OFFENSE":
-          return "#80cdc1";
-        case "GAMBLING":
-          return "#35978f";
-        case "LIQUOR":
-          return "#01665e";
-        case "OBSTRUCTING THE POLICE":
-          return "#003c30";
-        case "OBSTRUCTING JUDICIARY":
-          return "#006837";
-        case "DISORDERLY CONDUCT":
-          return "#1a9850";
-        case "OUIL":
-          return "#66bd63";
-        case "OTHER":
-          return "#fb8072";
-        case "RUNAWAY":
-          return "#80b1d3";
-        case "MISCELLANEOUS":
-          return "#bc80bd"
-        case "SOLICITATION":
-          return "#ccebc5";     
+        return "#b10026";
+      case "SEXUAL ASSAULT":
+        return "#e31a1c";
+      case "SEX OFFENSES":
+        return "#fc4e2a";
+      case "ROBBERY":
+        return "#fd8d3c";
+      case "ASSAULT":
+        return "#feb24c";
+      case "AGGRAVATED ASSAULT":
+        return "#fed976";
+      case "JUSTIFIABLE HOMICIDE":
+        return "#ffffb2";
+      case "ARSON":
+        return "#0c2c84";
+      case "EXTORTION":
+        return "#225ea8";
+      case "BURGLARY":
+        return "#1d91c0";
+      case "LARCENY":
+        return "#41b6c4";
+      case "STOLEN VEHICLE":
+        return "#7fcdbb";
+      case "STOLEN PROPERTY":
+        return "#c7e9b4";
+      case "DAMAGE TO PROPERTY":
+        return "#0c2c84";
+      case "KIDNAPPING":
+        return "#d8daeb";
+      case "FORGERY":
+        return "#b2abd2";
+      case "FRAUD":
+        return "#8073ac";
+      case "DANGEROUS DRUGS":
+        return "#542788";
+      case "SEX OFFENSES":
+        return "#2d004b";
+      case "FAMILY OFFENSE":
+        return "#80cdc1";
+      case "GAMBLING":
+        return "#35978f";
+      case "LIQUOR":
+        return "#01665e";
+      case "OBSTRUCTING THE POLICE":
+        return "#003c30";
+      case "OBSTRUCTING JUDICIARY":
+        return "#006837";
+      case "DISORDERLY CONDUCT":
+        return "#1a9850";
+      case "OUIL":
+        return "#66bd63";
+      case "OTHER":
+        return "#fb8072";
+      case "RUNAWAY":
+        return "#80b1d3";
+      case "MISCELLANEOUS":
+        return "#bc80bd";
+      case "SOLICITATION":
+        return "#ccebc5";
     }
-  }
+  };
 
   //This function will populate the 'Crime Overview Panel' when a user clicks a point
   let attributeDataPopulate = e => {
-    $('#crimeContents').empty()
-          $('#crimeContents').append(`
+    $("#crimeContents").empty();
+    $("#crimeContents").append(`
           <div class="row">
             <div class="col text-center my-2">
                 <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h4>
@@ -203,45 +203,66 @@ $(document).ready(function() {
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Crime Type:</span>
                           </div>
-                        <span class="form-control">${e.target.feature.properties.Type}</span>
+                        <span class="form-control">${
+                          e.target.feature.properties.Type
+                        }</span>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Crime Date:</span>
                           </div>
-                        <span class="form-control">${new Date(e.target.feature.properties.Date).getUTCMonth() + 1}/${new Date(e.target.feature.properties.Date).getUTCDate()}/${new Date(e.target.feature.properties.Date).getUTCFullYear()}</span>
+                        <span class="form-control">${new Date(
+                          e.target.feature.properties.Date
+                        ).getUTCMonth() + 1}/${new Date(
+      e.target.feature.properties.Date
+    ).getUTCDate()}/${new Date(
+      e.target.feature.properties.Date
+    ).getUTCFullYear()}</span>
                     </div>
                     <div class="input-group my-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Neighborhood:</span>
                           </div>
-                        <span class="form-control">${e.target.feature.properties.NeighborHood}</span>
+                        <span class="form-control">${
+                          e.target.feature.properties.NeighborHood
+                        }</span>
                     </div>
                     <div class="input-group my-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon3">Address:</span>
                           </div>
-                        <span class="form-control">${e.target.feature.properties.Address}</span>
+                        <span class="form-control">${
+                          e.target.feature.properties.Address
+                        }</span>
                     </div>
                 <!-- </div> -->
             </div>
         </div>
-      `)
-  }
+      `);
+    //Resets the style - this is used for highlighting features on click
+    geojson.resetStyle();
+    e.target.setStyle({
+      color: "rgb(0,255,255)",
+      stroke: true,
+      weight: 4,
+      fillColor: "yellow"
+    });
+  };
 
   let legendPopulate = legend => {
-    $('#legendContents').append(`<div class="row text-primary">
-      <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(legend)}"></i>  ${legend}
+    $("#legendContents").append(`<div class="row text-primary">
+      <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(
+        legend
+      )}"></i>  ${legend}
         </div>
-        `)
-  }
+        `);
+  };
 
   function onEachFeature(feature, layer) {
     layer.on({
       click: attributeDataPopulate
-    })
+    });
   }
-
 
   //Initial starter query when opening the map - this will match the dates that are set as the default dates.  This will help with preformance
   let query = L.esri.query({
@@ -253,7 +274,7 @@ $(document).ready(function() {
   query.where(`DATE > '${mapStartDate}' AND DATE < '${mapEndDate}'`);
 
   //Order the data recieved by Ascending
-  query.orderBy('Type', 'ASC')
+  query.orderBy("Type", "ASC");
 
   query.run(function(error, featureCollection, response) {
     if (error) {
@@ -262,7 +283,7 @@ $(document).ready(function() {
     }
 
     //Populate the legend with the visible layers - to start, loop through the collection
-    let legendItems = new Set()
+    let legendItems = new Set();
 
     //Create a crimeData cluster group
     crimeData = L.markerClusterGroup({
@@ -279,9 +300,9 @@ $(document).ready(function() {
     };
 
     //Colors are based off Color brewer
-    let geojson = L.geoJSON(featureCollection, {
+    geojson = L.geoJSON(featureCollection, {
       pointToLayer: function(feature, latlng) {
-        legendItems.add(feature.properties.Type)
+        legendItems.add(feature.properties.Type);
         return L.circle(latlng, geojsonMarkerOptions);
       },
       onEachFeature: onEachFeature,
@@ -302,84 +323,81 @@ $(document).ready(function() {
       type: "pie",
       data: {
         labels: Array.from(chartLabels()),
-        datasets: [{
-          data: chartData(),
-          backgroundColor: chartColorsArray, //Will be populated during the chartData() stage
-        }]
+        datasets: [
+          {
+            data: chartData(),
+            backgroundColor: chartColorsArray //Will be populated during the chartData() stage
+          }
+        ]
       },
       options: {
         //Turn off solid white stroke
         elements: {
           arc: {
-              borderWidth: 0
+            borderWidth: 0.3
           }
         },
         legend: {
-          display: false,
+          display: false
         },
         responsive: false,
         maintainAspectRatio: false,
         // turn off animations during chart data updates
         animation: {
           duration: 0
-        },
-      }
-    }
-    chart = new Chart('chartCanvas', config)
-
-     //Create a new object that will be used for the chart totals
-      function objectCreation(chartItems){
-        chartItems = Array.from(chartItems).sort()
-        for (let item of chartItems){
-          chartTotals.push({
-            item: item,
-            total: 0,
-            color: getLegendColor(item)
-          })
         }
       }
+    };
+    chart = new Chart("chartCanvas", config);
 
-  
-      function chartLabels () {
-        let chartItems = new Set()
-
-        crimeData.eachLayer(function (e) {
-          if(map.getBounds().contains(e.getLatLng()) ){
-             //first create a new set for the data in the map - this will be used for labels
-             chartItems.add(e.feature.properties.Type)
-          }
-        })
-        objectCreation(chartItems)
-        return chartItems
+    //Create a new object that will be used for the chart totals
+    function objectCreation(chartItems) {
+      chartItems = Array.from(chartItems).sort();
+      for (let item of chartItems) {
+        chartTotals.push({
+          item: item,
+          total: 0,
+          color: getLegendColor(item)
+        });
       }
+    }
 
-      function chartData(){
+    function chartLabels() {
+      let chartItems = new Set();
 
-        crimeData.eachLayer(function (e) {
-          if(map.getBounds().contains(e.getLatLng()) ){
-             chartTotals.forEach(function(chartTotals){
-               if (chartTotals.item === e.feature.properties.Type){
-                 chartTotals.total += 1
-               }
-             })
-          }
-        })
-        chartTotals.forEach(function(chartTotals){
-          data.push(chartTotals.total)
-          chartColorsArray.push(chartTotals.color)
-        })
-        return data
-      }
-  
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          //first create a new set for the data in the map - this will be used for labels
+          chartItems.add(e.feature.properties.Type);
+        }
+      });
+      objectCreation(chartItems);
+      return chartItems;
+    }
 
+    function chartData() {
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          chartTotals.forEach(function(chartTotals) {
+            if (chartTotals.item === e.feature.properties.Type) {
+              chartTotals.total += 1;
+            }
+          });
+        }
+      });
+      chartTotals.forEach(function(chartTotals) {
+        data.push(chartTotals.total);
+        chartColorsArray.push(chartTotals.color);
+      });
+      return data;
+    }
 
     //Set Extent to Crime Data that was filtered
     // map.fitBounds(crimeData.getBounds());
 
-
     //With the set created during the geoJSON function, the legend can now be built dynamically
-    for (let legend of legendItems){
-      legendPopulate(legend)
+    for (let legend of legendItems) {
+      legendPopulate(legend);
     }
   });
 
@@ -393,6 +411,78 @@ $(document).ready(function() {
       position: "topright"
     }
   ).addTo(map);
+
+  //Heatmap Button
+  let heatMapButton = L.easyButton({
+    states: [
+      {
+        stateName: "heatMap",
+        icon: "fa-fire text-primary", // and define its properties
+        title: "Heat Map", // like its title
+        onClick: function(btn, map) {
+          //Configure the heatmap layer
+          var cfg = {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            // if scaleRadius is false it will be the constant radius used in pixels
+            radius: 30,
+            maxOpacity: 0.8,
+            // scales the radius based on map zoom
+            scaleRadius: false,
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries
+            //   (there will always be a red spot with useLocalExtremas true)
+            useLocalExtrema: false,
+            // which field name in your data represents the latitude - default "lat"
+            latField: "lat",
+            // which field name in your data represents the longitude - default "lng"
+            lngField: "lng",
+            // which field name in your data represents the data value - default "value"
+            valueField: "count"
+          };
+
+          //Create an empty data array
+          let data = [];
+
+          //Set the heatmap layer with the options specified
+          heatmapLayer = new HeatmapOverlay(cfg);
+
+          let crimeHeat = {
+            max: 1,
+            data: []
+          };
+
+          //loop through the crime data layer and grab the lat/long values
+          crimeData.eachLayer(function(layer) {
+            latitude = layer._latlng.lat;
+            longitude = layer._latlng.lng;
+            crimeHeat.data.push({ lat: latitude, lng: longitude, count: 1 });
+          });
+
+          //set the data of the heatmap layer to the crime data
+          heatmapLayer.setData(crimeHeat);
+
+          //add the heatmap layer to the map
+          heatmapLayer.addTo(map);
+
+          //remove the crime data layer
+          crimeData.remove();
+
+          btn.state("closeHeatMap");
+        }
+      },
+      {
+        stateName: "closeHeatMap",
+        icon: "fa-times text-primary",
+        title: "Close Heat Map",
+        onClick: function(btn, map) {
+          heatmapLayer.remove();
+          crimeData.addTo(map);
+          btn.state("heatMap");
+        }
+      }
+    ],
+    position: "topright"
+  }).addTo(map);
 
   L.easyButton({
     states: [
@@ -461,7 +551,7 @@ $(document).ready(function() {
     let property = $(".selectpicker3").val();
 
     //assemble all arrays together as one array
-    let crimeArray = other.concat(violent, property)
+    let crimeArray = other.concat(violent, property);
     let queryItem = ``;
 
     for (let i = 0; i < crimeArray.length; i++) {
@@ -472,21 +562,21 @@ $(document).ready(function() {
       }
     }
 
-    if (crimeArray.length > 0){
+    if (crimeArray.length > 0) {
       queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})`;
     } else {
       queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`;
     }
 
     query.where(`${queryString}`);
-    console.log(queryString)
+    console.log(queryString);
 
     query.run(function(error, featureCollection, response) {
       if (error) {
         console.log(error);
         return;
-      } else if (featureCollection.features.length > 0){
-        crimeData.remove()
+      } else if (featureCollection.features.length > 0) {
+        crimeData.remove();
         //Create a crimeData cluster group
         crimeData = L.markerClusterGroup({
           // spiderfyOnMaxZoom: true,
@@ -501,12 +591,11 @@ $(document).ready(function() {
         };
 
         //Create a new empty set
-        let legendItems = new Set()
+        let legendItems = new Set();
 
-
-        let geojson = L.geoJSON(featureCollection, {
+        geojson = L.geoJSON(featureCollection, {
           pointToLayer: function(feature, latlng) {
-            legendItems.add(feature.properties.Type)
+            legendItems.add(feature.properties.Type);
             return L.circle(latlng, geojsonMarkerOptions);
           },
           onEachFeature: onEachFeature,
@@ -515,9 +604,9 @@ $(document).ready(function() {
 
         //With the set created during the geoJSON function, the legend can now be built dynamically
         //Remove current legend
-        $('#legendContents').empty()
-        for (let legend of legendItems){
-          legendPopulate(legend)
+        $("#legendContents").empty();
+        for (let legend of legendItems) {
+          legendPopulate(legend);
         }
 
         //Add GeoJSON that was created to the crimeData Cluster Grouping
@@ -529,12 +618,10 @@ $(document).ready(function() {
         //Set Extent to Crime Data that was filtered
         map.fitBounds(crimeData.getBounds());
       } else {
-        alert('No Features Returned - Original Features Shown')
+        alert("No Features Returned - Original Features Shown");
       }
-
     });
   });
-
 
   let updateChart = () => {
     //Update chart
@@ -548,10 +635,10 @@ $(document).ready(function() {
 
     function addData(chart, label, data, color) {
       //Sort the labels
-      label = label.sort()
+      label = label.sort();
       chart.data.labels = label;
       chart.data.datasets[0].data = data;
-      chart.data.datasets[0].backgroundColor = color
+      chart.data.datasets[0].backgroundColor = color;
       chart.update();
     }
 
@@ -560,59 +647,53 @@ $(document).ready(function() {
     let chartTotals = [];
     let chartColorsArray = [];
 
-     //Create a new object that will be used for the chart totals
-      function objectCreation(chartItems){
-        chartItems = Array.from(chartItems).sort()
-        for (let item of chartItems){
-          chartTotals.push({
-            item: item,
-            total: 0,
-            color: getLegendColor(item)
-          })
+    //Create a new object that will be used for the chart totals
+    function objectCreation(chartItems) {
+      chartItems = Array.from(chartItems).sort();
+      for (let item of chartItems) {
+        chartTotals.push({
+          item: item,
+          total: 0,
+          color: getLegendColor(item)
+        });
+      }
+    }
+
+    function chartLabels() {
+      let chartItems = new Set();
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          //first create a new set for the data in the map - this will be used for labels
+          chartItems.add(e.feature.properties.Type);
         }
-      }
+      });
+      objectCreation(chartItems);
+      return chartItems;
+    }
 
-  
-      function chartLabels () {
-        let chartItems = new Set()
-        crimeData.eachLayer(function (e) {
-          if(map.getBounds().contains(e.getLatLng()) ){
-             //first create a new set for the data in the map - this will be used for labels
-             chartItems.add(e.feature.properties.Type)
-          }
-        })
-        objectCreation(chartItems)
-        return chartItems
-      }
+    function chartData() {
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          chartTotals.forEach(function(chartTotals) {
+            if (chartTotals.item === e.feature.properties.Type) {
+              chartTotals.total += 1;
+            }
+          });
+        }
+      });
+      chartTotals.forEach(function(chartTotal) {
+        data.push(chartTotal.total);
+        chartColorsArray.push(chartTotal.color);
+      });
+      return data;
+    }
 
-      function chartData(){
-        crimeData.eachLayer(function (e) {
-          if(map.getBounds().contains(e.getLatLng()) ){
-             chartTotals.forEach(function(chartTotals){
-               if (chartTotals.item === e.feature.properties.Type){
-                 chartTotals.total += 1
-               }
-             })
-          }
-        })
-        chartTotals.forEach(function(chartTotal){
-          data.push(chartTotal.total)
-          chartColorsArray.push(chartTotal.color)
-        })
-        return data
-      }
+    function chartColors() {}
 
-      function chartColors(){
-
-      }
-
-    removeData(chart)
-    addData(chart, Array.from(chartLabels()), chartData(),chartColorsArray)
-
-    
-  }
+    removeData(chart);
+    addData(chart, Array.from(chartLabels()), chartData(), chartColorsArray);
+  };
 
   //As the user pans, update the display chart
-  map.on('zoom move', updateChart);
-  
+  map.on("zoom move", updateChart);
 });
