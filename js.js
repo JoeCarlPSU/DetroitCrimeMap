@@ -609,7 +609,6 @@ $(document).ready(function() {
   $("#applyFilter").on("click", () => {
     //if heatmap layer is currently active & present, remove layer and change button state back
     if (heatmapLayer) {
-      console.log("yes");
       heatmapLayer.remove();
       heatMapButton.state("heatMap");
     }
