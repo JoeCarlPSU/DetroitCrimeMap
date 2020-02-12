@@ -26,7 +26,7 @@
   --danger: #feb70d;
   --light: #f8f9fa;
   --dark: #343a40;
-  --danger-light: #FFFFC0;
+  --danger-light: #ffffc0;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -3104,8 +3104,8 @@ fieldset:disabled a.btn {
 
 .btn-danger-light {
   color: #212529;
-  background-color: #FFFFC0;
-  border-color: #FFFFC0;
+  background-color: #ffffc0;
+  border-color: #ffffc0;
 }
 
 .btn-danger-light:hover {
@@ -3124,8 +3124,8 @@ fieldset:disabled a.btn {
 
 .btn-danger-light.disabled, .btn-danger-light:disabled {
   color: #212529;
-  background-color: #FFFFC0;
-  border-color: #FFFFC0;
+  background-color: #ffffc0;
+  border-color: #ffffc0;
 }
 
 .btn-danger-light:not(:disabled):not(.disabled):active, .btn-danger-light:not(:disabled):not(.disabled).active,
@@ -3414,14 +3414,14 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-danger-light {
-  color: #FFFFC0;
-  border-color: #FFFFC0;
+  color: #ffffc0;
+  border-color: #ffffc0;
 }
 
 .btn-outline-danger-light:hover {
   color: #212529;
-  background-color: #FFFFC0;
-  border-color: #FFFFC0;
+  background-color: #ffffc0;
+  border-color: #ffffc0;
 }
 
 .btn-outline-danger-light:focus, .btn-outline-danger-light.focus {
@@ -3430,15 +3430,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-danger-light.disabled, .btn-outline-danger-light:disabled {
-  color: #FFFFC0;
+  color: #ffffc0;
   background-color: transparent;
 }
 
 .btn-outline-danger-light:not(:disabled):not(.disabled):active, .btn-outline-danger-light:not(:disabled):not(.disabled).active,
 .show > .btn-outline-danger-light.dropdown-toggle {
   color: #212529;
-  background-color: #FFFFC0;
-  border-color: #FFFFC0;
+  background-color: #ffffc0;
+  border-color: #ffffc0;
 }
 
 .btn-outline-danger-light:not(:disabled):not(.disabled):active:focus, .btn-outline-danger-light:not(:disabled):not(.disabled).active:focus,
@@ -5688,7 +5688,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .badge-danger-light {
   color: #212529;
-  background-color: #FFFFC0;
+  background-color: #ffffc0;
 }
 
 a.badge-danger-light:hover, a.badge-danger-light:focus {
@@ -7325,7 +7325,7 @@ button.bg-dark:focus {
 }
 
 .bg-danger-light {
-  background-color: #FFFFC0 !important;
+  background-color: #ffffc0 !important;
 }
 
 a.bg-danger-light:hover, a.bg-danger-light:focus,
@@ -7415,7 +7415,7 @@ button.bg-danger-light:focus {
 }
 
 .border-danger-light {
-  border-color: #FFFFC0 !important;
+  border-color: #ffffc0 !important;
 }
 
 .border-white {
@@ -10796,7 +10796,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-danger-light {
-  color: #FFFFC0 !important;
+  color: #ffffc0 !important;
 }
 
 a.text-danger-light:hover, a.text-danger-light:focus {
@@ -10943,7 +10943,8 @@ hr {
   opacity: 0.5;
 }
 
-.navbar-brand, .modal-title {
+.navbar-brand,
+.modal-title {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -10977,11 +10978,12 @@ hr {
 /* Over-write default leaflet easy button, leaflet, marker clusters and esri geocoder here */
 .leaflet-bar a {
   color: #004445;
-  background-color: #FFFFC0;
+  background-color: #ffffc0;
 }
 
-.leaflet-bar button, .leaflet-bar {
-  background-color: #FFFFC0;
+.leaflet-bar button,
+.leaflet-bar {
+  background-color: #ffffc0;
 }
 
 .geocoder-control-input {
@@ -11001,7 +11003,8 @@ hr {
   display: visible;
 }
 
-.dropdown-item:hover, .selected:hover {
+.dropdown-item:hover,
+.selected:hover {
   background-color: #feb70d;
 }
 

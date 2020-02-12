@@ -4,11 +4,17 @@ $theme-colors: (
   "success": #6f42c1,
   "info": #dc3545,
   "secondary": #17a2b8,
-  "danger-light": #FFFFC0
+  "danger-light": #ffffc0
 );
 
-$primary: map-get($map: $theme-colors, $key: primary);
-$secondary: map-get($map: $theme-colors, $key: danger);
+$primary: map-get(
+  $map: $theme-colors,
+  $key: primary
+);
+$secondary: map-get(
+  $map: $theme-colors,
+  $key: danger
+);
 
 @import "node_modules/bootstrap/scss/bootstrap";
 // @import "node_modules/leaflet/dist/leaflet.css";
@@ -27,7 +33,8 @@ hr {
   opacity: 0.5;
 }
 
-.navbar-brand, .modal-title {
+.navbar-brand,
+.modal-title {
   align-items: center;
   display: flex;
   pointer-events: none;
@@ -39,7 +46,7 @@ hr {
 }
 
 /* Modal */
-.modal-button{
+.modal-button {
   pointer-events: none;
   width: 30px;
 }
@@ -63,16 +70,17 @@ hr {
   background-color: map-get($map: $theme-colors, $key: danger-light);
 }
 
-.leaflet-bar button, .leaflet-bar{
+.leaflet-bar button,
+.leaflet-bar {
   background-color: map-get($map: $theme-colors, $key: danger-light);
 }
 
-.geocoder-control-input{
-  background-image: url(imgs/search.png)
+.geocoder-control-input {
+  background-image: url(imgs/search.png);
 }
 
 .marker-cluster span {
-  color: map-get($map: $theme-colors, $key: primary)
+  color: map-get($map: $theme-colors, $key: primary);
 }
 
 //Potential theming - not being used as of now
@@ -109,7 +117,8 @@ hr {
   display: visible;
 }
 
-.dropdown-item:hover, .selected:hover {
+.dropdown-item:hover,
+.selected:hover {
   background-color: map-get($map: $theme-colors, $key: danger);
 }
 

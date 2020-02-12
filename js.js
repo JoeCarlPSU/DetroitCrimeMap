@@ -34,7 +34,7 @@ $(document).ready(function() {
   //Home location
   // Fill in an appropriate lat/long
   let initialView = [42.33389093561675, -83.0475962162018];
-  let fullExtent = [42.35892446028166, -83.07123184204103]
+  let fullExtent = [42.35892446028166, -83.07123184204103];
 
   map = L.map("map", {
     zoomControl: false
@@ -194,20 +194,22 @@ $(document).ready(function() {
       case "SOLICITATION":
         return "#ccebc5";
       case "WEAPONS OFFENSES":
-        return "#c51b8a"
+        return "#c51b8a";
     }
   };
 
   //Convert to proper case - this offers a more streamlined experience for the user
   let properCaseConvert = type => {
     //Assign empty string
-    let typeConvert = ''
-    for (let i = 0; i < type.length; i++){
+    let typeConvert = "";
+    for (let i = 0; i < type.length; i++) {
       //If i is the first character in the string, or the previous character is a space - make uppercase, else make lowercase
-      (i === 0 || type[i-1] === ' ') ? typeConvert += type[i].toUpperCase() : typeConvert += type[i].toLowerCase()
+      i === 0 || type[i - 1] === " "
+        ? (typeConvert += type[i].toUpperCase())
+        : (typeConvert += type[i].toLowerCase());
     }
-    return typeConvert
-  }
+    return typeConvert;
+  };
 
   //This function will populate the 'Crime Overview Panel' when a user clicks a point
   let attributeDataPopulate = e => {
@@ -230,12 +232,13 @@ $(document).ready(function() {
                             <span class="input-group-text" id="basic-addon3">Crime Date:</span>
                           </div>
                         <span class="form-control">
-                        ${new Date(e.target.feature.properties.Date
+                        ${new Date(
+                          e.target.feature.properties.Date
                         ).getUTCMonth() + 1}/${new Date(
-                          e.target.feature.properties.Date
-                        ).getUTCDate()}/${new Date(
-                          e.target.feature.properties.Date
-                        ).getUTCFullYear()}
+      e.target.feature.properties.Date
+    ).getUTCDate()}/${new Date(
+      e.target.feature.properties.Date
+    ).getUTCFullYear()}
                     </span>
                     </div>
                     <div class="input-group my-3">
@@ -286,16 +289,18 @@ $(document).ready(function() {
   //Easy Buttons
   //Full Extent of map button
   let homeButton = L.easyButton({
-    states: [{
-      stateName: "home",
-      icon: "fa-home text-primary",
-      title: "Full Extent",
-      onClick: function(btn, map){
-        map.setView(fullExtent, 12);
+    states: [
+      {
+        stateName: "home",
+        icon: "fa-home text-primary",
+        title: "Full Extent",
+        onClick: function(btn, map) {
+          map.setView(fullExtent, 12);
+        }
       }
-    }],
+    ],
     position: "topright"
-  }).addTo(map)
+  }).addTo(map);
 
   /*Heatmap Button
     Add A heatmap to the current filered data*/
@@ -368,7 +373,7 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
-  })
+  });
 
   let legendButton = L.easyButton({
     states: [
@@ -393,9 +398,9 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
-  })
+  });
 
-  // Charts 
+  // Charts
   let chartButton = L.easyButton({
     states: [
       {
@@ -419,27 +424,29 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
-  })
+  });
 
   //Add the buttons to an array so they can be added to easy bar
-  let buttons = [heatMapButton, legendButton, chartButton]
+  let buttons = [heatMapButton, legendButton, chartButton];
 
   //Add the buttons as a 'bar' - found this in the documentation :)
-  L.easyBar(buttons, {position: "topright"}).addTo(map)
+  L.easyBar(buttons, { position: "topright" }).addTo(map);
 
   //Set the default button state for the chart
   chartButton.state("closeChart");
 
   //Modal view
   let modalButton = L.easyButton({
-    states: [{
-      stateName: "info",
-      icon: "fa-info text-primary",
-      title: "Show Info",
-      onClick: function(btn, map){
-        $('#Modal').modal('show');
+    states: [
+      {
+        stateName: "info",
+        icon: "fa-info text-primary",
+        title: "Show Info",
+        onClick: function(btn, map) {
+          $("#Modal").modal("show");
+        }
       }
-    }]
+    ]
   }).addTo(map);
 
   //ESRI Search control
@@ -447,7 +454,7 @@ $(document).ready(function() {
 
   let results = L.layerGroup().addTo(map);
 
-  searchControl.on('results', function (data) {
+  searchControl.on("results", function(data) {
     results.clearLayers();
     for (let i = data.results.length - 1; i >= 0; i--) {
       results.addLayer(L.marker(data.results[i].latlng));
@@ -524,8 +531,8 @@ $(document).ready(function() {
         //Chart title
         title: {
           display: true,
-          text: 'Current Extent Crime Data',
-          fontColor: '#004445',
+          text: "Current Extent Crime Data",
+          fontColor: "#004445",
           fontFamily: "'Helvetica Neue', Helvetica, Arial,sans-serif",
           fontSize: 12
         },
@@ -600,12 +607,11 @@ $(document).ready(function() {
 
   //Function for applying user specified filters
   $("#applyFilter").on("click", () => {
-    
     //if heatmap layer is currently active & present, remove layer and change button state back
-    if (heatmapLayer){
-      console.log('yes')
-      heatmapLayer.remove()
-      heatMapButton.state("heatMap")
+    if (heatmapLayer) {
+      console.log("yes");
+      heatmapLayer.remove();
+      heatMapButton.state("heatMap");
     }
 
     let query = L.esri.query({
@@ -625,11 +631,17 @@ $(document).ready(function() {
 
     //Build the where clause based on if it is the first pass in the loop
     for (let i = 0; i < crimeArray.length; i++) {
-      (i === 0) ? queryItem += `Type = '${crimeArray[i].toUpperCase().toString()}'` : queryItem += ` OR Type = '${crimeArray[i].toUpperCase().toString()}'`
+      i === 0
+        ? (queryItem += `Type = '${crimeArray[i].toUpperCase().toString()}'`)
+        : (queryItem += ` OR Type = '${crimeArray[i]
+            .toUpperCase()
+            .toString()}'`);
     }
     // If length of crime is less than 0, only dates will need to be filtered
-    (crimeArray.length > 0) ? queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})` : queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`
-    
+    crimeArray.length > 0
+      ? (queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})`)
+      : (queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`);
+
     //Set the where clause
     query.where(`${queryString}`);
 
@@ -760,5 +772,5 @@ $(document).ready(function() {
   map.on("zoom move", updateChart);
 
   //Load modal on page load
-  $('#Modal').modal('show');
+  $("#Modal").modal("show");
 });
