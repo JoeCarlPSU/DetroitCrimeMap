@@ -2,229 +2,338 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Leaflet -->
-    <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css">
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css">
 
-    <!-- Leaflet Easy Button -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+  <!-- Leaflet Easy Button -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
 
-    <!-- Leaflet Clusters -->
-    <link rel="stylesheet" type="text/css"
+  <!-- Leaflet Clusters -->
+  <link rel="stylesheet" type="text/css"
     href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
     integrity="sha512-BBToHPBStgMiw0lD4AtkRIZmdndhB6aQbXpX7omcrXeG2PauGBl2lzq2xUZTxaLxYz5IDHlmneCZ1IJ+P3kYtQ=="
     crossorigin="">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
     integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ=="
     crossorigin="">
 
-    <!-- Load Esri Leaflet Geocoder from CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.css"
+  <!-- Load Esri Leaflet Geocoder from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.css"
     integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
     crossorigin="">
 
-    <!-- Bootstrap DatePicker (TempusDominus)-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+  <!-- Bootstrap DatePicker (TempusDominus)-->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 
-    <!-- Bootstrap Select -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+  <!-- Bootstrap Select -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
-    <!-- css -->
-    <link rel="stylesheet" href="main.css">
+  <!-- css -->
+  <link rel="stylesheet" href="main.css">
 
-    <!-- Font Awesome -->
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <!-- Font Awesome -->
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 
 
-    <title>Hello, world!</title>
+  <title>Hello, world!</title>
 </head>
 
 <body>
 
-    <!-- NavBar -->
-    <nav class="shadow navbar navbar-light bg-secondary">
-          <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span class="my-auto ml-3 text-bold">Detroit Crime Viewer</span></a>
-    </nav>
+  <!-- NavBar -->
+  <nav class="shadow navbar navbar-light bg-danger">
+    <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span
+        class="my-auto ml-3 font-weight-bold">Detroit Crime Viewer</span></a>
+        <ul class="navbar-nav my-auto">
+        <li class="nav-item">
+          <a class="btn btn-sm btn-outline-primary"  href="https://personal.psu.edu/jkc6016/Portfolio/">Home</a>
+      </li>
+      </ul>
+  </nav>
 
-    <!-- Info Modal -->
-
-    <!-- Main App -->
-    <div class="container-fluid intro bg-primary">
-        <div class="row">
-            <div class="col-3 mb-3 mt-3 content d-flex flex-column">
-                <div class="col bg-light border rounded">
-                    
-                    <div class="row">
-                        <div class="col text-center my-2">
-                            <h4 class="text-primary"><i class="fas fa-filter text-warning"></i>  Data Filters</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col text-left my-2">
-                            <h5 class="text-primary"><i class="far fa-clock text-warning"></i>  Date Filters</h5>
-                        </div>
-                    </div>
-                    <form>
-                    <div class="form-group">
-                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon3">From:</span>
-                              </div>
-                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4">
-                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                                <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon3">To:</span>
-                              </div>
-                             <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
-                             <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
-                                 <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="row">
-                        <div class="col text-left my-2">
-                            <h5 class="text-primary"><i class="fas fa-sitemap text-warning"></i>  Type Filters</h5>
-                        </div>
-                    </div>
-                    <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1">Other</span>
-                        </div>
-                        <select class="selectpicker form-control" multiple data-style="btn-light border"  multiple title="All" data-actions-box="true">
-                            <option>Kidnapping</option>
-                            <option>Forgery</option>
-                            <option>Fraud</option>
-                            <option>Dangerous Drugs</option>
-                            <option>Sex Offenses</option>
-                            <option>Family Offense</option>
-                            <option>Gambling</option>
-                            <option>Liquor</option>
-                            <option>Obstructing The Police</option>
-                            <option>Obstructing Judiciary</option>
-                            <option>Disorderly Conduct</option>
-                            <option>Ouil</option>
-                            <option>Other</option>
-                            <option>Runaway</option>
-                            <option>Miscellaneous</option>
-                            <option>Solicitation</option>
-                          </select>                          
-                      </div>
-                      <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1">Violent</span>
-                        </div>
-                        <select class="selectpicker selectpicker2 form-control select-violent" multiple data-style="btn-light border" multiple title="All" data-actions-box="true">
-                            <option>Aggravated Assault</option>
-                            <option>Assault</option>
-                            <option>Homicide</option>
-                            <option>Justifiable Homicide</option>
-                            <option>Robbery</option>
-                            <option>Sex Offenses</option>
-                            <option>Sexual Assault</option>
-                            <option>Weapons Offenses</option>
-                          </select>                          
-                      </div>
-                      <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1">Property</span>
-                        </div>
-                        <select class="selectpicker selectpicker3 form-control" multiple data-style="btn-light border"  multiple title="All" data-actions-box="true">
-                            <option>Arson</option>
-                            <option>Burglary</option>
-                            <option>Damage To Property</option>
-                            <option>Extortion</option>
-                            <option>Larceny</option>
-                            <option>Stolen Property</option>
-                            <option>Stolen Vehicle</option>
-                          </select>                          
-                      </div>
-                    <div class="row">
-                        <div class="col text-center mt-2 mb-3">
-                            <button type="button" class="btn btn-primary" id="filterTest">Apply Filters</button>
-                        </div>
-                    </div>
-                </div>
-                </form>
-                <div class="col bg-light border rounded mt-3 flex-grow-1" id="crimeContents">
-                    <div class="row">
-                        <div class="col-12 text-center my-2">
-                            <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i>  Crime Overview</h4>
-                        </div>
-                        <div class="col-12 text-primary text-center font-italic mt-2">Click a crime to get more information</div>
-                    </div>
-                </div>
+  <!-- Info Modal -->
+  <div class="modal fade" id="Modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content border border-primary rounded rounded-lg">
+        <div class="modal-header bg-warning border-primary">
+          <h5 class="modal-title title-effect text-primary" id="exampleModalLabel"><img src="logo.png" width="35"
+              height="40">Detroit Crime Viewer</h5>
+        </div>
+        <div class="modal-body text-primary bg-light">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                Welcome to the Detroit, MI Crime Viewer application. This application is not affiliated with the city of
+                Detroit, MI and is intended for educational purposes only. The data for this project was provided by the
+                City of Detroit via their open data portal. Code for this project was tracked on GitHub at this link: <a
+                  href="https://github.com/JoeCarlPSU/DetroitCrimeMap">Code</a>. Data is currently housed on the Penn
+                State ArcGIS Server and may have intermitten availability throughout the day.
+              </div>
             </div>
-            <div class="col-9 map mb-3 mt-3 pl-0">
-                <div id="map" class="border rounded shadow"></div>
-                <div id="info-pane" class="leaflet-bar chart-container">
-                    <canvas id="chartCanvas" clss="text-center" width="215" height="215"></canvas>
+            <div class="row mt-2">
+              <div class="col">
+                <ul class="nav justify-content-center">
+                  <li class="nav-item font-weight-bold">How to operate: </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col">
+                <ul class="nav mt-2">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-info text-primary text-center"></span></button> button will bring up this screen.
+                  </li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-search text-primary text-center"></span></button> will allow you to search an
+                    address - search is provided via ESRI Geocoder.</li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-home text-primary text-center"></span></button> button will bring the map view to
+                    the full extent.</li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-fire text-secondary text-cnter"></span></button> button will create a heat map of
+                    the current filter. If a heat map is present when a filter is applied the heatmap will automatically
+                    be closed.</li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-layer-group text-info text-center"></span></button> button will show the legend of
+                    the current filter crimes.</li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-chart-pie text-success text-center"></span></button> button will show a pie chart
+                    with the breakdown of crimes in the current map view. The chart is updated as you pan and when
+                    hovered, and will display the current amount of crimes. Chart is shown on load by default.</li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Pressing the <button type="button"
+                      class="btn btn-sm btn-danger-light modal-button border border-dark"><span
+                        class="fas fa-times text-success text-center"></span></button> button will close the
+                    corresponding item selected (Heat Map - <span class="text-secondary font-weight-bold">blue</span>,
+                    Legend - <span class="text-info font-weight-bold">red</span>, or Chart - <span
+                      class="text-success font-weight-bold">purple</span>). Mutiple items can be active at one time.
+                  </li>
+                </ul>
+                <hr>
+                <ul class="nav mt-1">
+                  <li class="nav-item">Click a cluster will zoom the map to that area and break down the cluster group
+                    to individual points.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-warning border-primary">
+          <div class="mr-auto text-primary">Personal Project by Joe Carl</div>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div class="container-fluid intro bg-primary">
+    <div class="row">
+      <div class="col-3 mb-3 mt-3 content d-flex flex-column">
+        <div class="col bg-light border rounded">
+
+          <div class="row">
+            <div class="col text-center my-2">
+              <h4 class="text-primary"><i class="fas fa-filter text-warning"></i> Data Filters</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col text-left my-2">
+              <h5 class="text-primary"><i class="far fa-clock text-warning"></i> Date Filters</h5>
+            </div>
+          </div>
+          <form>
+            <div class="form-group">
+              <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">From:</span>
                 </div>
-                <div id="info-pane-legend" class="leaflet-bar legend-container">
-                    <div class="col" id="legendContents">
-                    </div>
+                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4">
+                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
                 </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon3">To:</span>
+                </div>
+                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker8" />
+                <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col text-left my-2">
+                <h5 class="text-primary"><i class="fas fa-sitemap text-warning"></i> Type Filters</h5>
+              </div>
+            </div>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Other</span>
+              </div>
+              <select class="selectpicker form-control" multiple data-style="btn-light border" multiple title="All"
+                data-actions-box="true" data-header="Select crime(s)">
+                <option>Kidnapping</option>
+                <option>Forgery</option>
+                <option>Fraud</option>
+                <option>Dangerous Drugs</option>
+                <option>Sex Offenses</option>
+                <option>Family Offense</option>
+                <option>Gambling</option>
+                <option>Liquor</option>
+                <option>Obstructing The Police</option>
+                <option>Obstructing Judiciary</option>
+                <option>Disorderly Conduct</option>
+                <option>Ouil</option>
+                <option>Other</option>
+                <option>Runaway</option>
+                <option>Miscellaneous</option>
+                <option>Solicitation</option>
+              </select>
+            </div>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Violent</span>
+              </div>
+              <select class="selectpicker selectpicker2 form-control select-violent" multiple
+                data-style="btn-light border" multiple title="All" data-actions-box="true"
+                data-header="Select crime(s)">
+                <option>Aggravated Assault</option>
+                <option>Assault</option>
+                <option>Homicide</option>
+                <option>Justifiable Homicide</option>
+                <option>Robbery</option>
+                <option>Sex Offenses</option>
+                <option>Sexual Assault</option>
+                <option>Weapons Offenses</option>
+              </select>
+            </div>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Property</span>
+              </div>
+              <select class="selectpicker selectpicker3 form-control" multiple data-style="btn-light border" multiple
+                title="All" data-actions-box="true" data-header="Select crime(s)">
+                <option>Arson</option>
+                <option>Burglary</option>
+                <option>Damage To Property</option>
+                <option>Extortion</option>
+                <option>Larceny</option>
+                <option>Stolen Property</option>
+                <option>Stolen Vehicle</option>
+              </select>
+            </div>
+            <div class="row">
+              <div class="col text-center mt-2 mb-3">
+                <button type="button" class="btn btn-primary" id="applyFilter">Apply Filters</button>
+              </div>
             </div>
         </div>
+        </form>
+        <div class="col bg-light border rounded mt-3 flex-grow-1" id="crimeContents">
+          <div class="row">
+            <div class="col-12 text-center my-2">
+              <h4 class="text-primary"><i class="fas fa-user-shield text-warning"></i> Crime Overview</h4>
+            </div>
+            <div class="col-12 text-primary text-center font-italic mt-2">Click a crime to get more information</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-9 map mb-3 mt-3 pl-0">
+        <div id="map" class="border rounded shadow"></div>
+        <div id="info-pane" class="leaflet-bar chart-container">
+          <canvas id="chartCanvas" clss="text-center" width="215" height="215"></canvas>
+        </div>
+        <div id="info-pane-legend" class="leaflet-bar legend-container">
+          <div class="col" id="legendContents">
+          </div>
+        </div>
+      </div>
     </div>
-    
+  </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="node_modules/leaflet/dist/leaflet.js"></script>
 
-    <!-- Leaflet Easy Button -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/leaflet/dist/leaflet.js"></script>
 
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js"
+  <!-- Leaflet Easy Button -->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.3.3/dist/esri-leaflet.js"
     integrity="sha512-cMQ5e58BDuu1pr9BQ/eGRn6HaR6Olh0ofcHFWe5XesdCITVuSBiBZZbhCijBe5ya238f/zMMRYIMIIg1jxv4sQ=="
     crossorigin=""></script>
 
-    <!-- Load Leaflet MarkerCluster and Esri Leaflet Cluster from CDN -->
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
+  <!-- Load Leaflet MarkerCluster and Esri Leaflet Cluster from CDN -->
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
     integrity="sha512-MQlyPV+ol2lp4KodaU/Xmrn+txc1TP15pOBF/2Sfre7MRsA/pB4Vy58bEqe9u7a7DczMLtU5wT8n7OblJepKbg=="
     crossorigin=""></script>
-    <script src="https://unpkg.com/esri-leaflet-cluster@2.0.1/dist/esri-leaflet-cluster.js"
+  <script src="https://unpkg.com/esri-leaflet-cluster@2.0.1/dist/esri-leaflet-cluster.js"
     integrity="sha512-2/Nwrks+A2omjKeWrF4TKFLIrUbAhSl8EDEm6xunuwXXYqMoJI71PZtlW0/vqt9d3DOyP1md/bzAnNH2KuAhaQ=="
     crossorigin=""></script>
 
-    <!-- Load Esri Leaflet Geocoder from CDN -->
-    <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.js"
+  <!-- Load Esri Leaflet Geocoder from CDN -->
+  <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.2/dist/esri-leaflet-geocoder.js"
     integrity="sha512-8twnXcrOGP3WfMvjB0jS5pNigFuIWj4ALwWEgxhZ+mxvjF5/FBPVd5uAxqT8dd2kUmTVK9+yQJ4CmTmSg/sXAQ=="
     crossorigin=""></script>
 
-    <!-- Leaflet Heatmap -->
-    <script src="https://cdn.jsdelivr.net/combine/npm/heatmapjs@2.0.2,npm/leaflet-heatmap@1.0.0"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+  <!-- Leaflet Heatmap -->
+  <script src="https://cdn.jsdelivr.net/combine/npm/heatmapjs@2.0.2,npm/leaflet-heatmap@1.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 
-    <!-- Load Chart.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <!-- Load Chart.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 
-    <!-- Bootstrap DatePicker (TempusDominus) -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- Bootstrap DatePicker (TempusDominus) -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Bootstrap Select -->
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+  <!-- Bootstrap Select -->
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
-    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>
-    
-    
-    <script src="js.js"></script>
+  <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script>
+
+
+  <script src="js.js"></script>
 
 </body>
 

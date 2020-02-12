@@ -1,7 +1,7 @@
 //Global Variables
 let map;
 let geojson;
-let heatmaplayer;
+let heatmapLayer;
 let crimeData;
 let mapStartDate = "1/22/2020";
 let mapEndDate = "1/31/2020";
@@ -33,11 +33,12 @@ $(document).ready(function() {
 
   //Home location
   // Fill in an appropriate lat/long
-  let home = [42.35968553893724, -83.0775833129883];
+  let initialView = [42.33389093561675, -83.0475962162018];
+  let fullExtent = [42.35892446028166, -83.07123184204103]
 
   map = L.map("map", {
     zoomControl: false
-  }).setView(home, 16);
+  }).setView(initialView, 16);
 
   L.control
     .zoom({
@@ -60,18 +61,6 @@ $(document).ready(function() {
   //   minZoom: 0,
   //   noWrap: true
   //   }).addTo(map)
-
-  //ESRI Search control
-  const searchControl = L.esri.Geocoding.geosearch().addTo(map);
-
-  let results = L.layerGroup().addTo(map);
-
-  searchControl.on('results', function (data) {
-    results.clearLayers();
-    for (let i = data.results.length - 1; i >= 0; i--) {
-      results.addLayer(L.marker(data.results[i].latlng));
-    }
-  });
 
   //Function to get colors for point feature on the map - this will work with the Leaflet API
   let getColor = feature => {
@@ -103,7 +92,7 @@ $(document).ready(function() {
       case "STOLEN PROPERTY":
         return { color: "#c7e9b4" };
       case "DAMAGE TO PROPERTY":
-        return { color: "#0c2c84" };
+        return { color: "#8A2BE2" };
       case "KIDNAPPING":
         return { color: "#FF0090" };
       case "FORGERY":
@@ -171,7 +160,7 @@ $(document).ready(function() {
       case "STOLEN PROPERTY":
         return "#c7e9b4";
       case "DAMAGE TO PROPERTY":
-        return "#0c2c84";
+        return "#8A2BE2";
       case "KIDNAPPING":
         return "#FF0090";
       case "FORGERY":
@@ -296,13 +285,13 @@ $(document).ready(function() {
 
   //Easy Buttons
   //Full Extent of map button
-  L.easyButton({
+  let homeButton = L.easyButton({
     states: [{
       stateName: "home",
       icon: "fa-home text-primary",
       title: "Full Extent",
       onClick: function(btn, map){
-        map.setView(home, 12);
+        map.setView(fullExtent, 12);
       }
     }],
     position: "topright"
@@ -314,7 +303,7 @@ $(document).ready(function() {
     states: [
       {
         stateName: "heatMap",
-        icon: "fa-fire text-primary", // and define its properties
+        icon: "fa-fire text-secondary", // and define its properties
         title: "Show Heat Map", // like its title
         onClick: function(btn, map) {
           //Configure the heatmap layer
@@ -369,7 +358,7 @@ $(document).ready(function() {
       },
       {
         stateName: "closeHeatMap",
-        icon: "fa-times text-primary",
+        icon: "fa-times text-secondary",
         title: "Close Heat Map",
         onClick: function(btn, map) {
           heatmapLayer.remove();
@@ -379,13 +368,13 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
-  }).addTo(map);
+  })
 
-  L.easyButton({
+  let legendButton = L.easyButton({
     states: [
       {
         stateName: "legend", // name the state
-        icon: "fa-layer-group text-primary", // and define its properties
+        icon: "fa-layer-group text-info", // and define its properties
         title: "Show Legend", // like its title
         onClick: function(btn, map) {
           // and its callback
@@ -395,7 +384,7 @@ $(document).ready(function() {
       },
       {
         stateName: "closeLegend",
-        icon: "fa-times text-primary",
+        icon: "fa-times text-info",
         title: "Close Legend",
         onClick: function(btn, map) {
           $(".legend-container").hide();
@@ -404,13 +393,14 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
-  }).addTo(map);
+  })
 
-  L.easyButton({
+  // Charts 
+  let chartButton = L.easyButton({
     states: [
       {
         stateName: "chart", // name the state
-        icon: "fa-chart-bar text-primary", // and define its properties
+        icon: "fa-chart-pie text-success", // and define its properties
         title: "Show Chart", // like its title
         onClick: function(btn, map) {
           // and its callback
@@ -420,7 +410,7 @@ $(document).ready(function() {
       },
       {
         stateName: "closeChart",
-        icon: "fa-times text-primary",
+        icon: "fa-times text-success",
         title: "Close Legal Plotter",
         onClick: function(btn, map) {
           $(".chart-container").hide();
@@ -429,7 +419,40 @@ $(document).ready(function() {
       }
     ],
     position: "topright"
+  })
+
+  //Add the buttons to an array so they can be added to easy bar
+  let buttons = [heatMapButton, legendButton, chartButton]
+
+  //Add the buttons as a 'bar' - found this in the documentation :)
+  L.easyBar(buttons, {position: "topright"}).addTo(map)
+
+  //Set the default button state for the chart
+  chartButton.state("closeChart");
+
+  //Modal view
+  let modalButton = L.easyButton({
+    states: [{
+      stateName: "info",
+      icon: "fa-info text-primary",
+      title: "Show Info",
+      onClick: function(btn, map){
+        $('#Modal').modal('show');
+      }
+    }]
   }).addTo(map);
+
+  //ESRI Search control
+  const searchControl = L.esri.Geocoding.geosearch().addTo(map);
+
+  let results = L.layerGroup().addTo(map);
+
+  searchControl.on('results', function (data) {
+    results.clearLayers();
+    for (let i = data.results.length - 1; i >= 0; i--) {
+      results.addLayer(L.marker(data.results[i].latlng));
+    }
+  });
 
   //Initial starter query when opening the map - this will match the dates that are set as the default dates.  This will help with preformance
   let query = L.esri.query({
@@ -576,9 +599,14 @@ $(document).ready(function() {
   });
 
   //Function for applying user specified filters
-  $("#filterTest").on("click", () => {
-    //If Crime data cluster group is present - remove and add new one
-    // crimeData.remove()
+  $("#applyFilter").on("click", () => {
+    
+    //if heatmap layer is currently active & present, remove layer and change button state back
+    if (heatmapLayer){
+      console.log('yes')
+      heatmapLayer.remove()
+      heatMapButton.state("heatMap")
+    }
 
     let query = L.esri.query({
       url:
@@ -730,4 +758,7 @@ $(document).ready(function() {
 
   //As the user pans, update the display chart
   map.on("zoom move", updateChart);
+
+  //Load modal on page load
+  $('#Modal').modal('show');
 });

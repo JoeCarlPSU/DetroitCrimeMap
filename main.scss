@@ -1,6 +1,10 @@
 $theme-colors: (
   "primary": #004445,
-  "danger": #feb70d
+  "danger": #feb70d,
+  "success": #6f42c1,
+  "info": #dc3545,
+  "secondary": #17a2b8,
+  "danger-light": #FFFFC0
 );
 
 $primary: map-get($map: $theme-colors, $key: primary);
@@ -17,10 +21,30 @@ body {
   overflow: hidden;
 }
 
-.navbar-brand {
+hr {
+  margin: 6px;
+  border-top: 1px solid map-get($map: $theme-colors, $key: primary);
+  opacity: 0.5;
+}
+
+.navbar-brand, .modal-title {
   align-items: center;
   display: flex;
+  pointer-events: none;
 }
+
+// Removing for now - need to use important here, may change later
+.bootstrap-select .btn:focus {
+  outline: none !important;
+}
+
+/* Modal */
+.modal-button{
+  pointer-events: none;
+  width: 30px;
+}
+
+/* Main Area */
 
 .content {
   height: calc(100vh - 66px - 32px);
@@ -32,9 +56,49 @@ body {
   overflow: hidden;
 }
 
+/* Over-write default leaflet easy button, leaflet, marker clusters and esri geocoder here */
+
 .leaflet-bar a {
-  color: map-get($map: $theme-colors, $key: $primary);
+  color: map-get($map: $theme-colors, $key: primary);
+  background-color: map-get($map: $theme-colors, $key: danger-light);
 }
+
+.leaflet-bar button, .leaflet-bar{
+  background-color: map-get($map: $theme-colors, $key: danger-light);
+}
+
+.geocoder-control-input{
+  background-image: url(imgs/search.png)
+}
+
+.marker-cluster span {
+  color: map-get($map: $theme-colors, $key: primary)
+}
+
+//Potential theming - not being used as of now
+// .marker-cluster{
+
+// }
+
+// .marker-cluster div {
+
+// }
+
+// .marker-cluster-medium {
+
+// }
+
+// .marker-cluster-medium div {
+
+// }
+
+// .marker-cluster-large{
+//   background-color: rgba(253, 156, 115, 0.6);
+// }
+
+// .marker-cluster-large div{
+//   background-color: rgba(241, 128, 23, 0.6);
+// }
 
 /* Drafting Container */
 .drafting-container {
@@ -44,10 +108,6 @@ body {
   z-index: 9999;
   display: visible;
 }
-
-// .row{
-//     border:1px solid green;
-// }
 
 .dropdown-item:hover, .selected:hover {
   background-color: map-get($map: $theme-colors, $key: danger);
@@ -78,9 +138,10 @@ h4 {
 
 #info-pane-legend {
   position: absolute;
+  max-height: 90%;
   height: auto;
   width: 300px;
-  display: visible;
+  display: none;
   bottom: 0px;
   left: 0px;
   z-index: 400;
@@ -88,4 +149,11 @@ h4 {
   background: white;
   overflow: auto;
   opacity: 0.9;
+}
+
+/* App is non-responsive as of current - developing on two screens so I am setting a media query here to avoid collision with search*/
+@media only screen and (max-width: 1600px) {
+  #info-pane-legend {
+    max-height: 80%;
+  }
 }
