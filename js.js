@@ -33,15 +33,11 @@ $(document).ready(function() {
 
   //Home location
   // Fill in an appropriate lat/long
-  let home = [];
-
-  // map = L.map("map", {
-  //   zoomControl: false
-  // }).setView([42.33804978112808, -83.05174858235452], 14);
+  let home = [42.35968553893724, -83.0775833129883];
 
   map = L.map("map", {
     zoomControl: false
-  }).setView([42.33513214181834, -83.05493701900036], 17);
+  }).setView(home, 16);
 
   L.control
     .zoom({
@@ -50,7 +46,7 @@ $(document).ready(function() {
     .addTo(map);
 
   var CartoDB_PositronNoLabels = L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
     {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -58,6 +54,12 @@ $(document).ready(function() {
       maxZoom: 19
     }
   ).addTo(map);
+
+  //Custom tile map - re-doing
+  // L.tileLayer('data/neighborhoods/{z}/{x}/{y}.png', {
+  //   minZoom: 0,
+  //   noWrap: true
+  //   }).addTo(map)
 
   //ESRI Search control
   const searchControl = L.esri.Geocoding.geosearch().addTo(map);
@@ -103,7 +105,7 @@ $(document).ready(function() {
       case "DAMAGE TO PROPERTY":
         return { color: "#0c2c84" };
       case "KIDNAPPING":
-        return { color: "#d8daeb" };
+        return { color: "#FF0090" };
       case "FORGERY":
         return { color: "#b2abd2" };
       case "FRAUD":
@@ -171,7 +173,7 @@ $(document).ready(function() {
       case "DAMAGE TO PROPERTY":
         return "#0c2c84";
       case "KIDNAPPING":
-        return "#d8daeb";
+        return "#FF0090";
       case "FORGERY":
         return "#b2abd2";
       case "FRAUD":
@@ -207,6 +209,17 @@ $(document).ready(function() {
     }
   };
 
+  //Convert to proper case - this offers a more streamlined experience for the user
+  let properCaseConvert = type => {
+    //Assign empty string
+    let typeConvert = ''
+    for (let i = 0; i < type.length; i++){
+      //If i is the first character in the string, or the previous character is a space - make uppercase, else make lowercase
+      (i === 0 || type[i-1] === ' ') ? typeConvert += type[i].toUpperCase() : typeConvert += type[i].toLowerCase()
+    }
+    return typeConvert
+  }
+
   //This function will populate the 'Crime Overview Panel' when a user clicks a point
   let attributeDataPopulate = e => {
     $("#crimeContents").empty();
@@ -220,7 +233,7 @@ $(document).ready(function() {
                             <span class="input-group-text" id="basic-addon3">Crime Type:</span>
                           </div>
                         <span class="form-control">
-                        ${e.target.feature.properties.Type}
+                        ${properCaseConvert(e.target.feature.properties.Type)}
                         </span>
                     </div>
                     <div class="input-group">
@@ -270,7 +283,7 @@ $(document).ready(function() {
     $("#legendContents").append(`<div class="row text-primary legend-text">
       <i class="fas fa-circle my-auto mx-2" style="color: ${getLegendColor(
         legend
-      )}"></i>  ${legend}
+      )}"></i>  ${properCaseConvert(legend)}
         </div>
         `);
   };
@@ -281,161 +294,28 @@ $(document).ready(function() {
     });
   }
 
-  //Initial starter query when opening the map - this will match the dates that are set as the default dates.  This will help with preformance
-  let query = L.esri.query({
-    url:
-      "https://services9.arcgis.com/6EuFgO4fLTqfNOhu/arcgis/rest/services/Detroit_Crime_Data/FeatureServer/0"
-  });
-
-  //Set the query to filter all crime dates but only on the start & end dates specified
-  query.where(`DATE > '${mapStartDate}' AND DATE < '${mapEndDate}'`);
-
-  //Order the data recieved by Ascending
-  query.orderBy("Type", "ASC");
-
-  query.run(function(error, featureCollection, response) {
-    if (error) {
-      console.log(error);
-      return;
-    }
-
-    //Populate the legend with the visible layers - to start, loop through the collection
-    let legendItems = new Set();
-
-    //Create a crimeData cluster group
-    crimeData = L.markerClusterGroup({
-      // spiderfyOnMaxZoom: true,
-      // disableClusteringAtZoom: 16
-    });
-
-    //Create a geoJSON from the featureCollection that is returned from the ESRI Leaflet Query
-    let geojsonMarkerOptions = {
-      radius: 10,
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 1
-    };
-
-    //Colors are based off Color brewer
-    geojson = L.geoJSON(featureCollection, {
-      pointToLayer: function(feature, latlng) {
-        legendItems.add(feature.properties.Type);
-        return L.circle(latlng, geojsonMarkerOptions);
-      },
-      onEachFeature: onEachFeature,
-      style: getColor
-    });
-
-    //Add GeoJSON that was created to the crimeData Cluster Grouping
-    crimeData.addLayer(geojson);
-
-    //Add Crime Data to map as a layer
-    map.addLayer(crimeData);
-
-    //Chart
-    let data = [];
-    let chartTotals = [];
-    let chartColorsArray = [];
-    let config = {
-      type: "pie",
-      data: {
-        labels: Array.from(chartLabels()),
-        datasets: [
-          {
-            data: chartData(),
-            backgroundColor: chartColorsArray //Will be populated during the chartData() stage
-          }
-        ]
-      },
-      options: {
-        //Turn off solid white stroke
-        elements: {
-          arc: {
-            borderWidth: 0.3
-          }
-        },
-        legend: {
-          display: false
-        },
-        responsive: false,
-        maintainAspectRatio: false,
-        // turn off animations during chart data updates
-        animation: {
-          duration: 0
-        }
+  //Easy Buttons
+  //Full Extent of map button
+  L.easyButton({
+    states: [{
+      stateName: "home",
+      icon: "fa-home text-primary",
+      title: "Full Extent",
+      onClick: function(btn, map){
+        map.setView(home, 12);
       }
-    };
-    chart = new Chart("chartCanvas", config);
+    }],
+    position: "topright"
+  }).addTo(map)
 
-    //Create a new object that will be used for the chart totals
-    function objectCreation(chartItems) {
-      chartItems = Array.from(chartItems).sort();
-      for (let item of chartItems) {
-        chartTotals.push({
-          item: item,
-          total: 0,
-          color: getLegendColor(item)
-        });
-      }
-    }
-
-    function chartLabels() {
-      let chartItems = new Set();
-
-      crimeData.eachLayer(function(e) {
-        if (map.getBounds().contains(e.getLatLng())) {
-          //first create a new set for the data in the map - this will be used for labels
-          chartItems.add(e.feature.properties.Type);
-        }
-      });
-      objectCreation(chartItems);
-      return chartItems;
-    }
-
-    function chartData() {
-      crimeData.eachLayer(function(e) {
-        if (map.getBounds().contains(e.getLatLng())) {
-          chartTotals.forEach(function(chartTotals) {
-            if (chartTotals.item === e.feature.properties.Type) {
-              chartTotals.total += 1;
-            }
-          });
-        }
-      });
-      chartTotals.forEach(function(chartTotals) {
-        data.push(chartTotals.total);
-        chartColorsArray.push(chartTotals.color);
-      });
-      return data;
-    }
-
-    //Set Extent to Crime Data that was filtered
-    // map.fitBounds(crimeData.getBounds());
-
-    //With the set created during the geoJSON function, the legend can now be built dynamically
-    for (let legend of legendItems) {
-      legendPopulate(legend);
-    }
-  });
-
-  L.easyButton(
-    "fa-home text-primary",
-    function(btn, map) {
-      let detroit = [42.370973789813014, -83.0918312072754];
-      map.setView(detroit, 12);
-    },
-    {
-      position: "topright"
-    }
-  ).addTo(map);
-
-  //Heatmap Button
+  /*Heatmap Button
+    Add A heatmap to the current filered data*/
   let heatMapButton = L.easyButton({
     states: [
       {
         stateName: "heatMap",
         icon: "fa-fire text-primary", // and define its properties
-        title: "Heat Map", // like its title
+        title: "Show Heat Map", // like its title
         onClick: function(btn, map) {
           //Configure the heatmap layer
           var cfg = {
@@ -551,6 +431,150 @@ $(document).ready(function() {
     position: "topright"
   }).addTo(map);
 
+  //Initial starter query when opening the map - this will match the dates that are set as the default dates.  This will help with preformance
+  let query = L.esri.query({
+    url:
+      "https://services9.arcgis.com/6EuFgO4fLTqfNOhu/arcgis/rest/services/Detroit_Crime_Data/FeatureServer/0"
+  });
+
+  //Set the query to filter all crime dates but only on the start & end dates specified
+  query.where(`DATE > '${mapStartDate}' AND DATE < '${mapEndDate}'`);
+
+  //Order the data recieved by Ascending
+  query.orderBy("Type", "ASC");
+
+  query.run(function(error, featureCollection, response) {
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    //Populate the legend with the visible layers - to start, loop through the collection
+    let legendItems = new Set();
+
+    //Create a crimeData cluster group
+    crimeData = L.markerClusterGroup({
+      // spiderfyOnMaxZoom: true,
+      // disableClusteringAtZoom: 16
+    });
+
+    //Create a geoJSON from the featureCollection that is returned from the ESRI Leaflet Query
+    let geojsonMarkerOptions = {
+      radius: 10,
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 1
+    };
+
+    //Colors are based off Color brewer
+    geojson = L.geoJSON(featureCollection, {
+      pointToLayer: function(feature, latlng) {
+        legendItems.add(feature.properties.Type);
+        return L.circle(latlng, geojsonMarkerOptions);
+      },
+      onEachFeature: onEachFeature,
+      style: getColor
+    });
+
+    //Add GeoJSON that was created to the crimeData Cluster Grouping
+    crimeData.addLayer(geojson);
+
+    //Add Crime Data to map as a layer
+    map.addLayer(crimeData);
+
+    //Chart
+    let data = [];
+    let chartTotals = [];
+    let chartColorsArray = [];
+    let config = {
+      type: "pie",
+      data: {
+        labels: Array.from(chartLabels()),
+        datasets: [
+          {
+            data: chartData(),
+            backgroundColor: chartColorsArray //Will be populated during the chartData() stage
+          }
+        ]
+      },
+      options: {
+        //Chart title
+        title: {
+          display: true,
+          text: 'Current Extent Crime Data',
+          fontColor: '#004445',
+          fontFamily: "'Helvetica Neue', Helvetica, Arial,sans-serif",
+          fontSize: 12
+        },
+        //Turn off solid white stroke
+        elements: {
+          arc: {
+            borderWidth: 0.3
+          }
+        },
+        legend: {
+          display: false
+        },
+        responsive: false,
+        maintainAspectRatio: false,
+        // turn off animations during chart data updates
+        animation: {
+          duration: 0
+        }
+      }
+    };
+    chart = new Chart("chartCanvas", config);
+
+    //Create a new object that will be used for the chart totals
+    function objectCreation(chartItems) {
+      chartItems = Array.from(chartItems).sort();
+      for (let item of chartItems) {
+        chartTotals.push({
+          item: item,
+          total: 0,
+          color: getLegendColor(item)
+        });
+      }
+    }
+
+    function chartLabels() {
+      let chartItems = new Set();
+
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          //first create a new set for the data in the map - this will be used for labels - convert to proper case
+          chartItems.add(e.feature.properties.Type);
+        }
+      });
+      objectCreation(chartItems);
+      return chartItems;
+    }
+
+    function chartData() {
+      crimeData.eachLayer(function(e) {
+        if (map.getBounds().contains(e.getLatLng())) {
+          chartTotals.forEach(function(chartTotals) {
+            if (chartTotals.item === e.feature.properties.Type) {
+              chartTotals.total += 1;
+            }
+          });
+        }
+      });
+      chartTotals.forEach(function(chartTotals) {
+        data.push(chartTotals.total);
+        chartColorsArray.push(chartTotals.color);
+      });
+      return data;
+    }
+
+    //With the set created during the geoJSON function, the legend can now be built dynamically
+    //Sort the values so the legend looks cleaner
+    legendItems = Array.from(legendItems).sort();
+    for (let legend of legendItems) {
+      legendPopulate(legend);
+    }
+  });
+
   //Function for applying user specified filters
   $("#filterTest").on("click", () => {
     //If Crime data cluster group is present - remove and add new one
@@ -579,7 +603,6 @@ $(document).ready(function() {
     (crimeArray.length > 0) ? queryString = `(DATE > '${startDate}' AND DATE < '${endDate}') AND (${queryItem})` : queryString = `DATE > '${startDate}' AND DATE < '${endDate}'`
     
     //Set the where clause
-    console.log(queryString)
     query.where(`${queryString}`);
 
     query.run(function(error, featureCollection, response) {
@@ -616,6 +639,8 @@ $(document).ready(function() {
         //With the set created during the geoJSON function, the legend can now be built dynamically
         //Remove current legend
         $("#legendContents").empty();
+        //Sort the legend items
+        legendItems = Array.from(legendItems).sort();
         for (let legend of legendItems) {
           legendPopulate(legend);
         }

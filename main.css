@@ -10838,15 +10838,11 @@ h4 {
   width: 300px;
   display: visible;
   bottom: 0px;
-  left: 15px;
+  left: 0px;
   z-index: 400;
   padding: 1em;
   background: white;
   overflow: auto;
   opacity: 0.9;
-}
-
-.legend-text {
-  text-transform: capitalize;
 }
 /*# sourceMappingURL=main.css.map */

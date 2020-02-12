@@ -44,10 +44,14 @@
 
 <body>
 
+    <!-- NavBar -->
     <nav class="shadow navbar navbar-light bg-secondary">
           <a class="navbar-brand my-auto text-primary" href="#"><img src="logo.png" width="35" height="40"><span class="my-auto ml-3 text-bold">Detroit Crime Viewer</span></a>
     </nav>
 
+    <!-- Info Modal -->
+
+    <!-- Main App -->
     <div class="container-fluid intro bg-primary">
         <div class="row">
             <div class="col-3 mb-3 mt-3 content d-flex flex-column">
@@ -159,10 +163,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-9 map mb-3 mt-3">
+            <div class="col-9 map mb-3 mt-3 pl-0">
                 <div id="map" class="border rounded shadow"></div>
                 <div id="info-pane" class="leaflet-bar chart-container">
-                    <canvas id="chartCanvas" width="215" height="215"></canvas>
+                    <canvas id="chartCanvas" clss="text-center" width="215" height="215"></canvas>
                 </div>
                 <div id="info-pane-legend" class="leaflet-bar legend-container">
                     <div class="col" id="legendContents">
